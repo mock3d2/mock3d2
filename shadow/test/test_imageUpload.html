@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/favicon.ico">
+
+    <title>Mock3D</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet"> <!--have bootstrap.min.css-->
+    <link href="css/mock3d.css" rel="stylesheet"> 
+    <style>
+
+.btn-file {
+  position: absolute;
+  overflow: hidden;
+  width:100px;
+  height:100px;
+  border:solid 1px #F00;
+  cursor:pointer;
+  
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  background: red;
+  cursor: inherit;
+  display: block;
+}
+
+    </style>
+ </head>
+
+
+
+<!- http://codepen.io/claviska/pen/vAgmd  ->
+
+<body>
+  
+
+
+
+
+  <div class = "imgbox_container">
+                    <h6>Shape Image</h6>
+                    <div>
+                        
+                        <div id = "container3" class="imgThumb_container">
+                        		<div class="btn-file">
+                            		<input type="file" id = "inputFileToLoad3" >
+                        		</div>
+
+                            <div id = "container3image" class="imgThumb"> 
+                            </div>
+                        </div>
+                    </div>
+  </div>
+  <div class = "imgbox_container">
+                    <h6>Shape Image2</h6>
+                    <div>
+                        
+                        <div id = "container2" class="imgThumb_container">
+                        		<div class="btn-file">
+                            		<input type="file" id = "inputFileToLoad2" >
+                        		</div>
+
+                            <div id = "container2image" class="imgThumb"> 
+                            </div>
+                        </div>
+                    </div>
+  </div>
+
+  
+  
+
+
+
+
+
+
+  		                                		
+    <!-- Bootstrap core JavaScript  ================================================== -->
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script> <!--have bootstrap.min.js -->
+
+
+ <script>
+ 
+function loadImageFileAsURL(filesSelected, container)
+{
+   
+        var fileToLoad = filesSelected[0];
+        if (fileToLoad.type.match("image.*"))
+        {
+            var fileReader = new FileReader();
+            fileReader.onload = function(fileLoadedEvent) 
+            {
+                var imageLoaded = document.createElement("img");
+                imageLoaded.src = fileLoadedEvent.target.result;
+				$('#' + container + 'image').empty();
+              $('#' + container + 'image').append(imageLoaded);
+            };
+            fileReader.readAsDataURL(fileToLoad);
+        }else{
+			       alert("Umm, images only? ... Yeah");
+		    }
+    
+}
+
+
+//show label when mouse over image
+$(document).on('change', '.btn-file :file', function() {
+  var input = $(this),
+      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+  input.trigger('fileselect', [label]);
+});
+
+$(document).ready( function() {
+    $('.btn-file :file').on('fileselect', function(event, label) {
+        var input = $(this).parents('.input-group').find(':text'),
+            log = label;
+        if( input.length ) {
+            input.val(log);
+        } else {
+            if( log ){
+				
+				var filesSelected3 = document.getElementById("inputFileToLoad3").files;
+				loadImageFileAsURL(filesSelected3, "container3");
+				
+            }
+            //loadImageFileAsURL();
+        }
+    });
+});
+</script>
+
+
+  </body>
+</html>

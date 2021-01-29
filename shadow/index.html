@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/favicon.ico">
+
+    <title>Integrated Cos &Theta; Model</title>
+
+    <!-- Google font -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet"> <!--have bootstrap.min.css-->
+	<link href="css/offcanvas.css" rel="stylesheet"> 
+    <link href="css/bootstrap-slider.css" rel="stylesheet"> 
+    <link href="css/jquery.minicolors.css" rel="stylesheet"> 
+    
+
+    <!-- Custom styles for this template -->
+    <link href="css/mock3d.css" rel="stylesheet">
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        #define max_lights 14
+
+        attribute vec4 vPosition;
+        attribute vec3 vNormal;
+        attribute vec2 texcoord;
+
+        varying vec2 f_texcoord;
+        varying vec3 fNormal;
+        
+        varying vec3 pLight[max_lights];
+        varying float lightN;// = lightNum
+        varying vec2 mouseXYcopy;
+
+        uniform float lightNum;
+        uniform vec2 mouseXY[max_lights];
+        uniform float pointLightDis[max_lights];
+        
+        
+        void main()
+        {
+
+            gl_Position = vPosition;
+
+            vec4 transformedNormal = vec4(vNormal, 1.0) /* + vec4(0.0, 0.0, 0.5, 0.0) */;
+            fNormal = normalize(transformedNormal.xyz);
+
+            for (int i = 0; i < max_lights; i++)
+            {
+                if (float(i)< float(lightNum))
+                {
+                    float x = mouseXY[i].x * 2.0 ;
+                    float y = mouseXY[i].y * 2.0;
+                    float z = pointLightDis[i];
+                    pLight[i] = vec3(x, -y, z + 0.05);
+                }else{
+                    break;
+                }
+            }
+            mouseXYcopy = mouseXY[0];
+            lightN = lightNum;
+            f_texcoord = texcoord;
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #define max_lights 14
+        #define light_resolution 3
+
+        precision mediump float;
+
+        varying vec2 f_texcoord;
+        varying vec3 fNormal;//(0,0,1)
+
+        varying float lightN;
+        
+        varying vec3 pLight[max_lights];
+
+        varying vec2 mouseXYcopy;
+        
+        uniform sampler2D uSamplerColor0, uSamplerColor1, uSamplerNormal, uSamplerForeground, uSamplerBackground, uSamplerAlpha, uSamplerHeight, uSamplerEnv;
+
+        uniform int currentLight;
+
+        uniform bool lightsOnly;
+
+        uniform vec3 lightColor;
+        uniform vec3 baseColor;
+        uniform float lightIntensity[max_lights];
+        uniform float pointLightDecay[max_lights];
+        
+        uniform bool showDiffuse[max_lights];
+        uniform bool showSpec[max_lights];
+        
+        uniform float styleBright, styleDark;
+        uniform float highlightA, highlightB;
+        uniform float alphaR, alphaG, alphaB;
+        uniform float logIOR, BGdis;
+
+        uniform float FGdis;
+        
+        uniform int reflMap;// 1: plane, 2:hemisphere
+        uniform float FGshiftX;
+        uniform float FGshiftY;
+        uniform float FGscaleX;
+        uniform float FGscaleY;
+
+        uniform float fresnelIntensity;
+        uniform float fresnelB;
+        uniform float fresnelC;
+        uniform bool checkFresnel;
+
+        uniform float hLightDistance, hLightIntensity, hLightBack;
+        uniform bool useEnvMap;
+
+        uniform vec3 area_light[light_resolution * light_resolution];
+
+/*
+
+        ****Yvonne's implementation****
+
+        vec4 normal()
+        {
+
+            vec4 normalMap = texture2D(uSamplerNormal, vec2(f_texcoord.s, f_texcoord.t) );
+            vec3 normalDisplace = normalMap.rgb;
+            normalDisplace = 2.0*normalDisplace - 1.0;
+            normalDisplace = normalize(normalDisplace);
+            return vec4(normalize(fNormal + normalDisplace), normalMap.a);
+        }
+
+        vec4 diffuse(vec3 n)
+        {
+
+            vec3 currentP = vec3(f_texcoord.s - 0.5, f_texcoord.t-0.5, 0.0);
+            
+            
+            vec4 color = vec4(0,0,0,1);
+            float lightWeight = 0.0;
+
+            for (int i = 0; i < max_lights; i++)
+            {
+                if (float(i)< float(lightN))
+                {
+                    vec3 vLight = normalize( pLight[i] - currentP);
+                    //float cosTheta = max( dot(n, vLight), 0.0);
+                    float cosTheta =  dot(n, vLight);//+ 1.0 )/2.0;
+                    float t = (cosTheta - styleDark) / (styleBright - styleDark);
+                    if (t>1.0) t=1.0; if (t<0.0) t=0.0;
+                    if ( showDiffuse[i] )
+                    {
+                        float dis = length( pLight[i] - currentP );
+                        
+                        color += (1.0 - t) * vec4(lightColor[i], 1.0) * lightIntensity[i] / ( 1.0 + pointLightDecay[i] * dis *4.0);
+                        lightWeight+=lightIntensity[i] ;
+                    };
+
+                }else{
+                    break;
+                }
+            }
+            
+            vec4 T = color;//lightWeight;
+            
+            vec4 c0 = texture2D(uSamplerColor0, vec2(f_texcoord.s, f_texcoord.t) );//dark
+            vec4 c1 = texture2D(uSamplerColor1, vec2(f_texcoord.s, f_texcoord.t) );//bright
+
+            vec4 colorFinal = c0 * (1.0 - T) + c1 * T;
+            
+            if (lightsOnly )
+            {
+                return T;
+            }else{
+                return colorFinal;
+            }
+
+            
+            
+        }
+
+        vec3 alphaControl()
+        {
+            vec4 alphaMap = texture2D(uSamplerAlpha, vec2(f_texcoord.s, f_texcoord.t) );
+            return alphaMap.rgb;
+        }
+
+        vec3 spec(vec3 n)
+        {
+            vec3 currentP = vec3(f_texcoord.s - 0.5, f_texcoord.t-0.5, 0.0);
+            vec3 finalSpec = vec3(0.0, 0.0, 0.0);
+
+            for (int i = 0; i < max_lights; i++)
+            {
+                if (float(i)< float(lightN))
+                {
+                    vec3 vLight = normalize( pLight[i] - currentP);
+                    if (showSpec[i] )
+                    {
+                    vec3 specColor = lightColor[i];
+                    vec3 viewVector = vec3(0.0, 0.0, 1.0);
+                    vec3 RVector = - vLight + 2.0 * dot(n, vLight) * n ;
+                    float temp = dot(RVector, viewVector);
+                    if ( temp < 0.0 ) temp = 0.0;
+                    float spec = pow(temp, 200.0);
+                    finalSpec += specColor * spec;
+                    }
+                }else{
+                    break;
+                }
+            }
+            
+            return finalSpec ;
+        }
+
+        //Reflected texture is treated as ultimate plane.
+        vec3 reflect1(vec3 n)
+        {
+
+            float reflectIntensity = 1.0;
+            vec3 reflect = - 1.0 * vec3(0.0, 0.0, 1.0) + 2.0 * dot(n, vec3(0.0, 0.0, 1.0)) * n;
+            vec2 reflCoord = f_texcoord + (reflect.xy / reflect.z) * FGdis + vec2( -mouseXYcopy.x * 0.5, mouseXYcopy.y * 0.5) ;//+ vLight0.xy ;
+            vec2 v = (reflCoord - vec2(0.5, 0.5)) / 0.5;
+                reflCoord.x = v.x * ( 1.0 - FGscaleX ) - FGshiftX + 0.5;
+                reflCoord.y = v.y * ( 1.0 - FGscaleY ) - FGshiftY + 0.5;
+                if (reflCoord.x > 1.0 || reflCoord.x < 0.0)
+                {
+                    reflCoord.x = reflCoord.x - float(floor(reflCoord.x));
+                    if ( floor(reflCoord.x) / 2.0 == 0.0)
+                    {
+                        reflCoord.x = 1.0 - reflCoord.x;
+                    }
+                }
+                if (reflCoord.y > 1.0 || reflCoord.y < 0.0)
+                {
+                    reflCoord.y = reflCoord.y - float(floor(reflCoord.y));
+                    if ( floor(reflCoord.y) / 2.0 == 0.0)
+                    {
+                        reflCoord.y = 1.0 - reflCoord.y;
+                    }
+                }
+            vec4 reflColor = texture2D(uSamplerForeground, reflCoord) ;
+            
+            if (checkFresnel )
+            {
+                reflColor = vec4(1.0,1.0,1.0,1.0);
+            }
+            return reflColor.rgb * reflectIntensity;
+        }
+
+
+        // vec3 reflect1(vec3 n)
+        // {
+
+        //     float reflectIntensity = 1.0;
+
+
+        //     float s = logIOR;
+        //     vec3 l = vec3(0,0,-1);//eye ray
+        //     vec3 temp =  cross (-n, l);
+        //     vec3 Vsurface = cross (temp, -n) ;
+        //     vec3 reflect;
+        //     vec3 origReflect = - 1.0 * vec3(0.0, 0.0, 1.0) + 2.0 * dot(n, vec3(0.0, 0.0, 1.0)) * n;
+
+        //     if ( s >= 0.0 ) reflect = origReflect * (1.0 - (-s)) + (n) * (-s);
+        //     if ( s < 0.0 ) reflect = origReflect * (1.0 - (s) ) + Vsurface * ( s);
+
+
+            
+        //     vec2 reflCoord = f_texcoord + (reflect.xy / reflect.z) * FGdis + vec2( -mouseXYcopy[0].x * 0.5, mouseXYcopy[0].y * 0.5) ;//+ vLight0.xy ;
+        //     vec2 v = (reflCoord - vec2(0.5, 0.5)) / 0.5;
+        //         reflCoord.x = v.x * ( 1.0 - FGscaleX ) - FGshiftX + 0.5;
+        //         reflCoord.y = v.y * ( 1.0 - FGscaleY ) - FGshiftY + 0.5;
+        //         if (reflCoord.x > 1.0 || reflCoord.x < 0.0)
+        //         {
+        //             reflCoord.x = reflCoord.x - float(floor(reflCoord.x));
+        //             if ( floor(reflCoord.x) / 2.0 == 0.0)
+        //             {
+        //                 reflCoord.x = 1.0 - reflCoord.x;
+        //             }
+        //         }
+        //         if (reflCoord.y > 1.0 || reflCoord.y < 0.0)
+        //         {
+        //             reflCoord.y = reflCoord.y - float(floor(reflCoord.y));
+        //             if ( floor(reflCoord.y) / 2.0 == 0.0)
+        //             {
+        //                 reflCoord.y = 1.0 - reflCoord.y;
+        //             }
+        //         }
+        //     vec4 reflColor = texture2D(uSamplerForeground, reflCoord) ;
+            
+        //     if (checkFresnel )
+        //     {
+        //         reflColor = vec4(1.0,1.0,1.0,1.0);
+        //     }
+        //     return reflColor.rgb * reflectIntensity;
+        // }
+
+
+        // Reflected texture is treated as if it is on a hemisphere 1 unit
+            // away from the surface.
+        vec3 reflect2(vec3 n)
+        {
+            
+            float reflectIntensity = 1.0;
+            vec2 reflCoord = f_texcoord + n.xy/n.z * FGdis + vec2( -mouseXYcopy.x * 0.5, mouseXYcopy.y * 0.5);
+            vec2 v = (reflCoord - vec2(0.5, 0.5)) / 0.5;
+                reflCoord.x = v.x * ( 1.0 - FGscaleX ) - FGshiftX +0.5;
+                reflCoord.y = v.y * ( 1.0 - FGscaleY ) - FGshiftY + 0.5;
+                if (reflCoord.x > 1.0 || reflCoord.x < 0.0)
+                {
+                    reflCoord.x = reflCoord.x - float(floor(reflCoord.x));
+                    if ( floor(reflCoord.x) / 2.0 == 0.0)
+                    {
+                        reflCoord.x = 1.0 - reflCoord.x;
+                    }
+                }
+                if (reflCoord.y > 1.0 || reflCoord.y < 0.0)
+                {
+                    reflCoord.y = reflCoord.y - float(floor(reflCoord.y));
+                    if ( floor(reflCoord.y) / 2.0 == 0.0)
+                    {
+                        reflCoord.y = 1.0 - reflCoord.y;
+                    }
+                }
+
+            vec4 reflColor = texture2D(uSamplerForeground, reflCoord) ;
+            if (checkFresnel)
+            {
+                reflColor = vec4(1.0,1.0,1.0,1.0);
+            }
+
+            return reflColor.rgb * reflectIntensity;
+        }
+        
+
+
+
+
+        vec3 refract2(vec3 n) // Photorealistic equation
+        {
+            float refractIntensity = 1.0;
+            float ior = pow(2.0, logIOR);
+            float cos1 = dot(n, vec3(0, 0, 1.0)); //vLight
+            float cos2 = sqrt(1.0 + ior * ior * ( (cos1 * cos1) - 1.0 ));
+            vec3 refract = -1.0 * ior * vec3(0, 0, 1.0) + (ior * cos1 - cos2) * n; // vec3(0,0,1) -> vLight
+            vec2 refrCoord = f_texcoord + (refract.xy / refract.z ) * (2.0 * BGdis);
+            vec4 refrColor = texture2D(uSamplerBackground, refrCoord);
+            if (checkFresnel == true)
+            {
+                refrColor = vec4(0,0,0,1.0);
+            }
+            return refrColor.rgb * refractIntensity;
+        }
+
+        vec3 refract(vec3 n) // Ergun's way
+        {
+            float refractIntensity = 1.0;
+            float s = logIOR;
+            vec3 l = vec3(0,0,-1);//eye ray
+            vec3 temp =  cross (-n, l);
+            vec3 Vsurface = cross (temp, -n) ;
+            vec3 refract;
+            if ( s > 0.0 ) refract = l * (1.0 - (-s)) + (-n) * (-s);
+            if ( s < 0.0 ) refract = l * (1.0 - (s) ) + Vsurface * ( s);
+
+
+            vec2 refrCoord = f_texcoord + (refract.xy / refract.z ) * (2.0 * BGdis);
+            vec4 refrColor = texture2D(uSamplerBackground, refrCoord);
+            if (checkFresnel == true)
+            {
+                refrColor = vec4(0,0,0,1.0);
+            }
+            return refrColor.rgb * refractIntensity;
+        }
+        
+
+        vec3 fresnelBlend(vec3 n, vec3 refl, vec3 refr)
+        {
+            float cos = dot(n, vec3(0, 0, 1.0) );
+            float N = (logIOR + 1.0) / 2.0;
+            float Amin = 0.02, 
+                    Amax = 0.3;
+            float Cmin = 0.4, 
+                Cmax = 1.0;
+            
+            float A = Amin * ( 1.0 - N ) + Amax * N;
+            float B = 0.0;
+            float C = Cmin * ( 1.0 - N ) + Cmax * N;
+            float D = 1.0;
+
+            float num1 = sqrt( 1.0 - fresnelB * fresnelB );
+            float num2 = sqrt( 1.0 - fresnelC * fresnelC );
+            // float num1 = fresnelC ;
+            // float num2 = fresnelB ;
+
+            float fresnel;
+            float F;
+            if ( 1.0 > cos && cos > num1 ) {
+                F = ( cos - num1 ) / ( 1.0 - num1 );
+                fresnel = A * F  + B * ( 1.0 - F ) ;
+            }else if ( num1 > cos && cos > num2 ){
+                F = ( cos - num2 ) / ( num1 - num2 );
+                fresnel = B * F + C * ( 1.0 - F );
+            }else if ( num2 > cos && cos > 0.0){
+                F = ( cos - 0.0 ) / ( num2 - 0.0 );
+                fresnel = C * F + D * ( 1.0 - F );
+            }
+
+            if (fresnelIntensity > 0.0){
+                fresnel = 1.0 * fresnelIntensity + fresnel * ( 1.0 - fresnelIntensity);
+                return refl * fresnel + refr * ( 1.0 - fresnel );
+            }else{
+                fresnel = fresnel * (1.0 + fresnelIntensity);
+                return refl * fresnel + refr * ( 1.0 - fresnel );
+            }
+
+            
+            //vec3 reflTemp = refl * reflectIntensity ;
+            //vec3 refrTemp = refr * (1.0 - reflectIntensity);
+            //return reflTemp * (1.0 - cos) + refrTemp * cos;
+            
+               
+        }
+*/
+        /**
+        Calculates illumination for the point based on a given light position
+        Inputs:
+            pL - Light position
+            sample - Number of samples to use for sampling. A bigger number will produce higher quality results
+        Outputs:
+            illum - Float diffuse value
+        **/
+        float illumination(vec3 pL, float sample)
+        {
+            // Light position
+            float xl = pL.r, yl =  pL.g, zl = pL.b;
+            // Current position to calculate shadow
+            float xi = f_texcoord.s, yi = f_texcoord.t;
+
+            // Height value at given position on surface
+            vec4 tcol = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t));
+
+            float zi = tcol[0] - 0.1;
+
+            // Step size
+            float s = 1.0;
+
+            // Calculate the distance between the light position and current position on surface
+            float a = sqrt((xl - xi) * (xl - xi) + (yl - yi) * (yl - yi));
+            float b = abs(zl-zi);
+            float c = sqrt(a * a + b * b); // Diagonal from light to surface
+
+            // Increments for traveling through light path in x and y directions
+            float incx = abs(xl - xi)/(s * sample), incy = abs(yl - yi)/(s * sample);
+            // Increment height value for iterating through the light path
+            float incz = b/(s * sample);
+            float lz = 0.0, uz = 1.0;
+            float lx = 0.0, ux = 1.0;
+            float ly = 0.0, uy = 1.0;
+            if (xl < xi) 
+            {
+                incx = -incx;
+                lx = xl;
+                ux = xi;
+            }
+            else
+            {
+                lx = xi;
+                ux = xl;
+            }
+            if (yl < yi)
+            {
+                incy = -incy;
+                ly = yl;
+                uy = yi;
+            }
+            else
+            {
+                ly = yi;
+                uy = yl;
+            }
+            if (zl < zi) 
+            {
+                incz = -incz;
+                lz = zl;
+                uz = zi;
+            }
+            else
+            {
+                lz = zi;
+                uz = zl;
+            }
+
+            vec4 map = texture2D(uSamplerHeight, vec2(xi, yi));
+            //if (map.rgb == vec3(0.0,0.0,0.0))
+                //return 0.0;
+            // Amount of darkness for position
+            float darkness = 1.0;
+            for (int i = 0; i < 128; i++)
+            {
+                if (xi <= ux && xi >= lx &&
+                    yi <= uy && yi >= ly &&
+                    zi >-hLightBack)
+                {
+                    // Get height value at position
+                    vec4 hMap = texture2D(uSamplerHeight, vec2(xi, yi));
+                    if (zi < hMap.r)
+                        darkness = darkness + 0.2;
+                    xi = xi + incx;
+                    yi = yi + incy;
+                    zi = zi + incz;
+                }
+            }
+
+            // Calculate illumination at position
+            float illum = (1.0)/(darkness);  
+            return illum;
+        }
+
+        /**
+        Calculates the specular highlights and forward scatter values for a given light position
+        Inputs:
+            pL - Light position
+        Outputs:
+            highlight - 2D vector
+            highlight[0] - specular value
+            highlight[1] - forward scatter value
+        **/
+        vec2 highlights(vec3 pL)
+        {
+            vec3 pS = vec3(f_texcoord.s, f_texcoord.t, 0.0);
+
+            // Height at point
+            pS.b = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t))[0]-0.1;
+
+            // Surface normal
+            vec3 sn = vec3(0.0, 0.0, 1.0);
+
+            // The following snippet is used for computing the surface normal
+            // For calculating surface normal, we find the previous and after
+            // fragments  along the x and y axis and find the difference
+            // We then normalize it
+            float lx = 0.0, ux = 0.0;
+            float ly = 0.0, uy = 0.0;
+
+            if(pS.r > 0.001)
+                lx = texture2D(uSamplerHeight, vec2(f_texcoord.s-0.001, f_texcoord.t))[0];
+            if(pS.r < 0.999)
+                ux = texture2D(uSamplerHeight, vec2(f_texcoord.s+0.001, f_texcoord.t))[0];
+
+            if(pS.g > 0.001)
+                ly = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t-0.001))[0];
+            if(pS.g < 0.999)
+                uy = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t+0.001))[0];
+
+            sn.r =  lx - ux;
+            sn.g =  ly - uy;
+
+            vec3 n = normalize(sn);
+
+            // Reflected ray for calculating specular
+            vec3 reflected_ray = vec3(0.0, 0.0, -1.0) + 2.0 * n.b * vec3( n.r ,  n.g ,  n.b);
+
+            // Eye ray for calculating forward scatter
+            vec3 eye_ray = vec3(0.0, 0.0, -1.0);
+
+            vec3 light_ray = normalize(pL - pS);
+
+            // Maximum and minimum falloff
+            float maxfall = styleDark; 
+            float minfall = styleBright; 
+
+            // The following snippet is for calculating specular and forward scatter values
+            // We use maximum and minimum value to control their falloff
+            // Specular
+            float s = (dot(reflected_ray, light_ray) - minfall)/(maxfall - minfall);
+            if (s > 1.0) s = 1.0; 
+            if (s < 0.0) s = 0.0;
+
+            // Forward scatter
+            float f = (dot(eye_ray, light_ray) - minfall)/(maxfall - minfall);
+            if (f > 1.0) f = 1.0; 
+            if (f < 0.0) f = 0.0;
+
+            return vec2(s, f);
+        }
+
+        /**
+        Calculates the color for a point using a single light
+        Outputs:
+            color - 4D vector
+        **/
+        vec4 pointIllumination()
+        {
+            // Light position based on mouse position
+            // This is a conversion from mouse coordinates to canvas coordinates
+            vec3 pl = vec3((pLight[0].x+1.0)/2.0, (pLight[0].y+1.0)/2.0, hLightDistance);
+
+            vec2 highlights = 1.0 * highlights(pl);
+            // Specular
+            float s = pow(highlights.r, 5.0);
+            // Forward scatter
+            float f = highlights.g;
+
+            // Calculate diffuse/illumination at position
+            float d = illumination(pl, 512.0);
+
+            vec4 c0 = vec4(baseColor, 0.5);
+            vec4 cL = 2.5 * vec4(lightColor, 1.0);
+
+            // Amount of specular and forward scatter
+            float ks = highlightB;
+            float kf = highlightA;
+
+            // Integrated shading equation
+            vec4 sum_color = (1.0 - ks) * ( c0 + ( (1.0 - kf ) + kf * f) * d * cL) + ks * s * cL;
+            //vec4 sum_color = c0 + 1.0 * f * d * cL + 1.0 * s * cL;
+
+            // Dividing the color with its magnitude to get final color
+            vec4 color = sum_color/sum_color.a;
+
+            return color;
+        }
+
+        /**
+        Calculates the color for a point using a environment light
+        Outputs:
+            color - 4D vector
+        **/
+        vec4 environmentIllumination()
+        {
+            // Light color and environment sample color
+            vec4 cL, cE;
+            // Base color
+            vec4 c0 = vec4(baseColor, 0.5);
+            vec4 sum_color = c0;
+            // Light position
+            vec3 pL;
+
+            float u = 0.0, v = 0.0, w = 3.0, h = 3.0;
+            float theta = 0.0, phi = 0.0;
+            float x = 0.0, y = 0.0, z = 0.0;
+            // Radiud of environment sphere
+            float r = 3.5;
+            float pi = 3.14;
+            float d = 0.0;
+
+            // This is a conversion from mouse coordinates to canvas coordinates
+            float xl = (pLight[0].x+1.0)/2.0, yl = (pLight[0].y+1.0)/2.0;
+            // For loop for calculating illumination at each sample along x and y axis
+            for (int i = 0; i < 3; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    // u and v coordinates in the environment map texture
+                    u = float(i)/w; v = float(j)/h;
+
+                    // Offsetting the environment texture based on mouse position
+                    phi = v + yl;
+                    theta = u + xl/2.00;
+
+                    // Spherical mapping
+                    // Finds the position of uv coordinate on a 3D sphere
+                    z = r * cos(2.0 * pi * theta) * sin(pi * phi);
+                    x = r * sin(2.0 * pi * theta) * sin(pi * phi);
+                    y = r * cos(pi * phi);
+
+                    cL = texture2D(uSamplerEnv, vec2(u, v));
+                    pL = vec3(x, y, z);
+                    d = illumination(pL, 64.0);
+
+                    // This if else loop can be used to stylize the output result
+                    // float mind = 0.10;
+                    // float maxd = 0.90;
+                    //if (d > maxd) env_color =  25.0 * cL;
+                    //else if (d > mind) env_color =  25.0 * (d - mind)/(maxd - mind)* cL;
+                    //else env_color = vec4(0.0, 0.0, 0.0,0.0);
+
+                    vec2 highlight = 1.0 * highlights(pL);
+                    // Specular
+                    float s = pow(highlight.r, 5.0);
+                    // Forward scatter
+                    float f = highlight.g;
+
+                    // Amount of specular and forward scatter
+                    float ks = highlightB;
+                    float kf = highlightA;
+
+                    // Integrated shading equation
+                    cE = (1.0 - ks) * ( ( 0.1 * (1.0 - kf )+ kf * f) * d * cL) + ks * s * cL;
+
+                    sum_color += cE;
+                }
+            }
+            // Dividing the color with its magnitude to get final color
+            vec4 color =  sum_color/sum_color.a;
+
+            return color;
+        }
+
+        /**
+        Main function - Executes either point light or environment light
+        algorithm based on user selection
+        **/
+        void main()
+        {
+            vec4 final_color;
+
+            if (useEnvMap)
+            {
+                final_color = environmentIllumination();
+            }
+            else
+            {
+                final_color = pointIllumination();
+            }
+
+            gl_FragColor = hLightIntensity * final_color;
+        }
+    </script>
+
+    <script type="text/javascript" src="js/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="resources/webgl-utils.js"></script>
+    <script type="text/javascript" src="resources/initShaders.js"></script>
+    <script type="text/javascript" src="resources/MV.js"></script>
+    <script type="text/javascript" src="resources/ccapture.js-master/build/CCapture.all.min.js"></script>
+
+  </head>
+
+  <body>
+	  <!--nav-->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+              <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"  aria-expanded="false" aria-controls="navbar">
+                      <span class="sr-only">Toggle navigation</span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                      <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" href="#">Integrated Cos &Theta; Model</a>
+              </div>
+              <div id="navbar" class="navbar-collapse collapse">
+                  <ul class="nav navbar-nav navbar-right hidden">
+                      <li><a href="#">Project</a></li>
+                      <li><a href="#">Papers</a></li>
+                      <li><a href="#">Download</a></li>
+                      <li><a href="#">About</a></li>
+                  </ul>
+              </div>
+        </div>
+    </nav>
+
+	<!--content-->
+    <div class="container-fluid">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <!--Left Column start-->
+            <div class="col-sm-2 sidebar sidebar-left sidebar-offcanvas">
+        
+                <div class="main_button_container"><div class="hidden">
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Homer</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Picasso</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Bubble</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Bottle</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Eye</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">EscherSphere</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">UnderWater</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">FragFace</button>
+                    </div></div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom" id="btn_Start">Start</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom" id="btn_Stop">Stop</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Lucy</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Skull</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Dragon</button>
+                    </div>
+                    <div class="main_button"> 
+                        <button class ="btn btn-block btn-mycustom">Buddha</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+		  	
+              
+                <ul class="myAccordion" id = "accordion_L">
+              	    <!--Basic Images-->
+                    <li class="panel">
+                    	<a class="myControlTitle" data-toggle= "collapse" data-parent= "#accordion_L" href="#basicImages"  > 
+                              Basic Images 	
+                        </a>
+                        <div id = "basicImages" class= "inCollapse collapse in" > 
+                       	    <div class = "imgbox_container hidden">
+                          	    <h6>Shape Image</h6>
+                                <div>
+                        	   	    <div id = "container3" class="imgThumb_container">
+                                        <div class="btn-file">
+                                            <input type="file" id = "inputFileToLoad3" >
+                                        </div>
+                                        <div id = "container3image" class="imgThumb"> 
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                            <div class = "imgbox_container hidden">
+                                <h6>Bright Image</h6>
+                                <div>
+                        		    <div id = "container2" class="imgThumb_container">
+                                        <div class="btn-file">
+                                            <input type="file" id = "inputFileToLoad2" >
+                                        </div>
+                                        <div id = "container2image" class="imgThumb"> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = "imgbox_container hidden">
+                          	    <h6>Texture Image</h6>
+                        		<div>
+                                    <div id = "container1" class="imgThumb_container">
+                                        <div class="btn-file">
+                                            <input type="file" id = "inputFileToLoad1" >
+                                        </div>
+                                        <div id = "container1image" class="imgThumb"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = "imgbox_container">
+                                <h6>Height Image</h6>
+                                <div>
+                                    <div id = "container7" class="imgThumb_container">
+                                        <div class="btn-file">
+                                            <input type="file" id = "inputFileToLoad7" >
+                                        </div>
+                                        <div id = "container7image" class="imgThumb"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                          	    <h6>Falloff Control</h6>
+                          	    <div class="slider_box">
+                            		<input id="styleControl_slider" data-slider-id='customSlider' type="text" class=" span2"   value="" />
+                                </div>
+                          	     <div >
+                          		    <div class = "h7 inlineBlock">Min</div>   
+                            		<div class = "h7 pull-right">Max</div>
+                          	     </div>
+                            </div>
+                    	</div>	
+                    </li>
+                    
+                </ul>
+            </div>
+            <!--Left Column end-->
+            <!--Main Canvas start-->
+            <div class="col-sm-8 main">
+        	    <!--
+        	    <p class="pull-left visible-xs">
+            	   <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+                </p>
+                -->
+         	    <!-- 
+                <img src="img/solidColor.jpg" class="img-responsive" alt="our canvas"> 
+                -->
+                <div class="canvas_container">
+                    <canvas id="gl-canvas" >
+                        Oops ... your browser doesn't support the HTML5 canvas element
+                    </canvas>
+                    
+                    <svg id = "lightPosition_container" xmlns = " http://www.w3.org/2000/svg" >
+
+                        
+                    
+                    </svg>
+                    
+                </div>
+        
+            </div>
+            <!--Main Canvas end-->
+        
+            <!--Right column start-->
+            <div class="col-sm-2 sidebar sidebar-right">
+                <ul class="myAccordion" id = "accordion_R">
+                    <!--Light-->
+                    <!--<li class="panel">
+            	        <a class = "myControlTitle collapsed" data-toggle= "collapse" data-parent= "#accordion_R" href="#lightControl"> 
+                		    Light 
+                        </a>
+                        <div id = "lightControl" class= "inCollapse collapse" > 
+                            <div class = "checkbox">
+                                <label>
+                         		    <span class="h6 inlineBlock" >Show Lights Position</span>
+                                    <div class = "checkbox_container pull-right">
+                             	        <input type="checkbox" id ="lightsPositionSelect" >
+                                        <div class = "pseudoCheckbox"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class = "checkbox">
+                                <label>
+                                    <span class="h6 inlineBlock" >Show Lights Only</span>
+                                    <div class = "checkbox_container pull-right">
+                                        <input type="checkbox" id = "lightsOnlySelect">
+                                        <div class = "pseudoCheckbox"></div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="btn_container">
+                                <button class ="btn btn-block" id = "btn_addLight"  >ADD LIGHT</button>
+                            </div>
+                            <div id = "lights_container">
+                                <ul class="myAccordion" id = "accordion_Lights">
+                                    
+                                </ul>
+                            </div>
+            	        </div>	
+                    </li>-->
+                    <!--Shadow-->
+                    <!-- <li class="panel">
+            	        <a class = "myControlTitle collapsed" data-toggle="collapse" data-parent = "#accordion_R" href="#shadow">Shadow<span class="sr-only">(current)</span></a>
+                        <div id = "shadow" class= "inCollapse collapse"> 
+               	            <div class="checkbox">
+                                <label>
+                                    <span class = "h6 inlineBlock"> Show Shadow </span>
+                                    <div class = "checkbox_container pull-right">
+                           	            <input type="checkbox">
+                                        <div class = "pseudoCheckbox"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Sample size </span>
+                                <div class="pull-right">
+                       	            <input type="text" class="form-control mytextbox text-center" id="sha_sampleSize_val"    value="1">
+                                </div>
+                                <div class="slider_box">
+                       	            <input id="sha_sampleSize_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Number of Sample </span>
+                                <div class="pull-right">
+                       	            <input type="text" class="form-control mytextbox text-center" id="sha_numberOfSample_val" value="1">
+                                </div>
+                                <div class="slider_box">
+                       	            <input id="sha_numberOfSample_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+            	        </div>	
+                    </li> -->
+                    <!--Additional Alpha Control-->
+
+                    <li class="panel">
+                        <a class = "myControlTitle collapsed" data-toggle= "collapse" data-parent= "#accordion_R" href="#lightControl"> 
+                            Light 
+                        </a>
+    
+                        <div id = "lightControl" class= "inCollapse collapse" > 
+                            <div class = "checkbox">
+                                <label>
+                                    <span class="h6 inlineBlock" >Show Light Position</span>
+                                    <div class = "checkbox_container pull-right">
+                                        <input type="checkbox" id ="lightsPositionSelect">
+                                        <div class = "pseudoCheckbox"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class = "checkbox">
+                                <label>
+                                    <span class="h6 inlineBlock" >Use Environment Map</span>
+                                    <div class = "checkbox_container pull-right">
+                                        <input type="checkbox" id = "useEnvMapSelect">
+                                        <div class = "pseudoCheckbox"></div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Light Color </span>
+                                <div class="pull-right">
+                                     <input class="colorPicker" id="lightColor">
+                                </div>
+                            </div>
+
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Base Color </span>
+                                <div class="pull-right">
+                                     <input class="colorPicker" id="baseColor">
+                                </div>
+                            </div>
+
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Light Depth </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="hLightDistance_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="hLightDistance_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Light Intensity </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="hLightIntensity_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="hLightIntensity_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <div class = "checkbox">
+                                <label>
+                                    <span class="h6 inlineBlock" >ADDITIONAL CONTROLS</span>
+                                    <div class = "checkbox_container pull-right">
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Forward Scattering </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="highlightA_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="highlightA_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Specular Highlights </span>
+                                <div class="pull-right">
+                                     <input type="text" class="form-control mytextbox text-center" id="highlightB_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="highlightB_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+                           <div class="slider_container">
+                                <span class="h6 inlineBlock"> Back Height </span>
+                                <div class="pull-right">
+                                     <input type="text" class="form-control mytextbox text-center" id="hLightBack_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="hLightBack_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+                        </div>  
+                    </li>
+                    <li class="panel">
+                        <a class="myControlTitle collapsed" data-toggle="collapse" data-parent = "#accordion_R" href="#envControl">
+                            Environment Light
+                        </a>
+                        <div id = "envControl" class= "inCollapse collapse"> 
+                            <div class="imgbox_container">
+                                <h6>Environment Light</h6>
+                                <div>
+                                    <div id = "container8" class="imgThumb_container" >
+                                        <div class="btn-file">
+                                            <input type="file" id = "inputFileToLoad8" >
+                                        </div>
+                                        <div id = "container8image" class="imgThumb"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="panel hidden">
+                        <a class="myControlTitle collapsed" data-toggle="collapse" data-parent = "#accordion_R" href="#alphaControl">
+                            Alpha
+                        </a>
+                        <div id = "alphaControl" class= "inCollapse collapse"> 
+                            <div class="imgbox_container">
+                                <h6>Alpha Image</h6>
+                                <div>
+                                    <div id = "container6" class="imgThumb_container" >
+                                        <div class="btn-file">
+                                            <input type="file" id = "inputFileToLoad6" >
+                                        </div>
+                                        <div id = "container6image" class="imgThumb"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Alpha in Red </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="alphaInRed_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="alphaInRed_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Alpha in Green </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="alphaInGreen_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="alphaInGreen_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Alpha in Blue </span>
+                                <div class="pull-right">
+                                     <input type="text" class="form-control mytextbox text-center" id="alphaInBlue_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="alphaInBlue_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+                        </div>  
+                    </li>
+                    <!--Refraction-->
+                    <li class="panel hidden">
+            	        <a class="myControlTitle collapsed" data-toggle="collapse" data-parent = "#accordion_R" href="#refractionControl">
+                	        Refraction
+                        </a>
+                        <div id = "refractionControl" class= "inCollapse collapse"> 
+                            <div class="imgbox_container">
+                		        <h6>Background image</h6>
+                		        <div>
+                                    <div id = "container5" class="imgThumb_container" >
+                                        <div class="btn-file">
+                                            <input type="file" id = "inputFileToLoad5" >
+                                        </div>
+                                        <div id = "container5image" class="imgThumb"> </div>
+                                    </div>
+                                </div>
+                	        </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Refraction </span>
+                                <div class="pull-right">
+                       	            <input type="text" class="form-control mytextbox text-center" id="refraction_val">
+                                </div>
+                                <div class="slider_box">
+                       	            <input id="refraction_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> BG Distance </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="refr_BGdis_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="refr_BGdis_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <div class = "fresnel_container">
+                                <div class = "fresnelPanel">
+                                    <div class = "myFresnelTitle"> 
+                                        FRESNEL
+                                    </div>
+                                    <div class = "fresnelBox">
+                                        <div class="checkbox">
+                                            <label>
+                                                <span class = "h6 inlineBlock"> Check Fresnel </span>
+                                                <div class = "checkbox_container pull-right">
+                                                    <input type="checkbox" id ="checkFresnelSelect">
+                                                    <div class = "pseudoCheckbox"></div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div >
+                                            <span class="h6 inlineBlock"> Fresnel Control </span>
+                                            <div class="pull-right">
+                                                <input type="text" class="form-control mytextbox text-center" id="fresnel_intensity_val">
+                                            </div>
+                                            <div class="slider_box">
+                                                <input id="fresnel_intensity_slider" data-slider-id='customSlider' type="text" />
+                                            </div>
+                                            <div>
+                                                <div class = "h7 inlineBlock">Full Refract</div>   
+                                                <div class = "h7 pull-right">Full Reflect</div>
+                                             </div>
+                                        </div>
+                                        <div>
+                                            <h6>Fresnel Position</h6>
+                                            <div class="slider_box">
+                                                <input id="fresnelControl_slider" data-slider-id='customSlider' type="text" class=" span2" value="" />
+                                            </div>
+                                            <div>
+                                                <div class = "h7 inlineBlock">Center</div>   
+                                                <div class = "h7 pull-right">Edge</div>
+                                            </div>
+                                        </div>        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <!-- <div class="slider_container">
+                                <span class="h6 inlineBlock"> Translucency </span>
+                                <div class="pull-right">
+                       	            <input type="text" class="form-control mytextbox text-center" id="translucency_val" value="1">
+                                </div>
+                                <div class="slider_box">
+                       	            <input id="translucency_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div> -->
+            	        </div>	
+                    </li>
+                    <!--Reflection-->
+                    <li class="panel hidden">
+            	        <a class="myControlTitle collapsed" data-toggle="collapse" data-parent = "#accordion_R" href="#reflectionControl">
+                	        Reflection
+                        </a>
+                        <div id = "reflectionControl" class= "inCollapse collapse"> 
+                            <div class="imgbox_container">
+                	   	       <h6>Foreground image</h6>
+                	   	       <div>
+                                    <div id = "container4" class="imgThumb_container">
+                                        <div class="btn-file">
+                                            <input type="file" id = "inputFileToLoad4" >
+                                        </div>
+                                        <div id = "container4image" class="imgThumb"> </div>
+                                    </div>
+                                </div>
+                	        </div>
+                            <div class="dropdown_container">
+                                <span class="h6 inlineBlock"> Map as </span>
+                                <div class="pull-right">
+                                     <div class="btn-group" id = "reflMap">
+                                        <button type="button" class="btn btn-default dropdown-toggle myDropdown" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li><a id = "reflMap_plane">Plane</a></li>
+                                            <li><a id = "reflMap_hemisphere">Hemisphere</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                           
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Shift X</span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="refl_FGshiftX_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="refl_FGshiftX_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Shift Y</span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="refl_FGshiftY_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="refl_FGshiftY_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Scale X</span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="refl_FGscaleX_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="refl_FGscaleX_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Scale Y</span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="refl_FGscaleY_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="refl_FGscaleY_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> FG Distance </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="refl_FGdis_val">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="refl_FGdis_slider" data-slider-id='customSlider' type="text" />
+                                </div>
+                            </div>
+                            <!-- <div class="slider_container">
+                                <span class="h6 inlineBlock"> Bluriness </span>
+                                <div class="pull-right">
+                           	        <input type="text" class="form-control mytextbox text-center" id="bluriness_val"    value="1">
+                                </div>
+                                <div class="slider_box">
+                           	        <input id="bluriness_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div> -->
+            	       </div>	
+                    </li>
+                    <!--Ambient Occlusion-->
+                    <!-- <li class="panel">
+                        <a class = "myControlTitle collapsed" data-toggle="collapse" data-parent = "#accordion_R" href="#aoControl">
+                            Ambient Occlusion                           
+                        </a>
+                        <div id = "aoControl" class= "inCollapse collapse"> 
+                            <div class="checkbox">
+                                <label>
+                                    <span class = "h6 inlineBlock"> Show Ambient </span>
+                                    <div class = "checkbox_container pull-right">
+                                        <input type="checkbox">
+                                        <div class = "pseudoCheckbox"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Sample size </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="amb_sampleSize_val"    value="1">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="amb_sampleSize_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+                            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Number of Sample </span>
+                                <div class="pull-right">
+                                    <input type="text" class="form-control mytextbox text-center" id="amb_numberOfSample_val" value="1">
+                                </div>
+                                <div class="slider_box">
+                                    <input id="amb_numberOfSample_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+                        </div>  
+                    </li> -->
+                    <!--Quality-->
+                    <!-- <li class="panel">
+            	        <a class="myControlTitle collapsed" data-toggle="collapse" data-parent = "#accordion_R" href=" #qualityControl">
+                    	    Quality 
+                        </a>
+                        <div id = "qualityControl" class= "inCollapse collapse"> 
+               	            <div class="slider_container">
+                                <span class="h6 inlineBlock"> Shape Map Quality </span>
+                                <div class="pull-right">
+                           	        <input type="text" class="form-control mytextbox text-center" id="smQuality_val"    value="1">
+                                </div>
+                                <div class="slider_box">
+                           	        <input id="smQuality_slider" data-slider-id='customSlider' type="text"/>
+                                </div>
+                            </div>
+            	       </div>	
+                    </li> -->
+                </ul>
+            </div>
+            <!--Right column end-->
+        </div>
+    </div>
+
+
+
+    <!-- light templete -->
+    <script type="text/template" data-template="light">
+        <li class = "panel" data-id ="{{id}}" id = "lightPanel{{id}}">
+            <a class = "myControlTitle myLightsTitle collapsed" data-toggle= "collapse" data-parent= "#accordion_Lights" href="#light{{id}}"> 
+                <div class = "destroy" ></div>
+                LIGHT{{id}}
+            </a>
+            <div id = "light{{id}}" class= "lightBox inCollapse collapse" > 
+                <div class = "checkbox">
+                    <label>
+                        <span class="h6 inlineBlock" >Diffuse</span>
+                        <div class = "checkbox_container pull-right">
+                            <input type="checkbox" id = "diffuseSelect">
+                            <div class = "pseudoCheckbox"></div>
+                        </div>
+                    </label>
+                </div>
+                <div class = "checkbox">
+                    <label>
+                        <span class="h6 inlineBlock" >Specular</span>
+                        <div class = "checkbox_container pull-right">
+                            <input type="checkbox" id = "specSelect" >
+                            <div class = "pseudoCheckbox"></div>
+                        </div>
+                    </label>
+                </div>
+                <div>
+                    <span class="h6 inlineBlock"> Color </span>
+                    <div class="pull-right">
+                         <input class="colorPicker" type="hidden" >
+                    </div>
+                </div>
+                <div class="slider_container">
+                    <span class="h6 inlineBlock"> Intensity </span>
+                    <div class="pull-right">
+                        <input type="text" class="form-control mytextbox text-center" id="intensity_val">
+                    </div>
+                    <div class="slider_box">
+                        <input id="intensity_slider" data-slider-id='customSlider' type="text" />
+                    </div>
+                </div>
+                <div class="slider_container">
+                    <span class="h6 inlineBlock"> Light Depth </span>
+                    <div class="pull-right">
+                        <input type="text" class="form-control mytextbox text-center" id="pointLGTdis_val">
+                    </div>
+                    <div class="slider_box">
+                        <input id="pointLGTdis_slider" data-slider-id='customSlider' type="text" />
+                    </div>
+                </div>
+                <div class="slider_container">
+                    <span class="h6 inlineBlock"> Light Decay </span>
+                    <div class="pull-right">
+                        <input type="text" class="form-control mytextbox text-center" id="pointLGTdecay_val">
+                    </div>
+                    <div class="slider_box">
+                        <input id="pointLGTdecay_slider" data-slider-id='customSlider' type="text" />
+                    </div>
+                </div>
+                
+            </div>
+        </li>
+
+    </script>
+
+    <!-- Bootstrap core JavaScript  ================================================== -->
+    <script src="js/bootstrap.min.js"></script> 
+    <script src="js/bootstrap-slider.js"></script>
+    
+    <!--colorpicker-->
+    <script src="js/jquery.minicolors.min.js"></script>
+    
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- More -->
+    <script type="text/javascript" src="cube.js"></script>
+    <script type="text/javascript" src="dragndrop.js"></script>
+    <script type="text/javascript" src="sliders.js"></script> 
+    <script type="text/javascript" src="addLight.js"></script>
+    
+  </body>
+</html>

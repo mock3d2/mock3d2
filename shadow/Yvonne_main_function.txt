@@ -1,0 +1,66 @@
+    
+            vec4 nn = normal();
+            vec3 n = nn.xyz;
+            
+            //vec3 specular = spec(n);
+            vec4 diffuse = diffuse(n, ht);//+ vec4(specular, 1.0);
+            vec3 specular = spec(n);
+            vec3 alphaControl = alphaControl();
+            vec4 background = texture2D(uSamplerBackground, vec2(f_texcoord.s, f_texcoord.t) );
+            vec3 backgroundColor = background.rgb;
+            vec3 refl = vec3 (0,0,0); 
+            if (reflMap == 1)
+            {
+                refl = reflect1(n) + specular; //plane
+                if (checkFresnel){refl = reflect1(n);} 
+            }else if (reflMap == 2)
+            {
+                refl = reflect2(n) + specular; //hemisphere
+                if (checkFresnel){refl = reflect2(n);} 
+            }
+            vec3 refr = refract(n);
+            
+            vec3 fresnel = fresnelBlend(n, refl, refr);
+            
+            vec4 finalColor = diffuse;
+
+
+            
+            //finalColor += vec4(specular, 1.0); 
+
+
+            vec4 finalColor_showLightsOnly = finalColor;
+
+            float alpha = diffuse.a;
+
+            float a;
+            
+            a = alphaControl.r;
+            alpha = alpha * (1.0 - a) + alpha * alphaR * a; 
+            a = alphaControl.g;
+            alpha = alpha * (1.0 - a) + alpha * alphaG * a; 
+            a = alphaControl.b;
+            alpha = alpha * (1.0 - a) + alpha * alphaB * a; 
+            
+            
+            finalColor = vec4 (fresnel * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
+            
+            
+            
+
+            a = nn.a  ;
+            vec3 compBackground = backgroundColor * (1.0 - a) + finalColor.rgb * a;
+            
+            if (checkFresnel )
+            {
+                finalColor = vec4 (fresnel, 1.0);
+            }
+
+            if (lightsOnly )
+            {
+                finalColor = vec4(finalColor_showLightsOnly.rgb, 1.0);
+                compBackground = vec3(0,0,0) * (1.0 - a) + finalColor.rgb * a;
+            }
+
+            
+            gl_FragColor = vec4(diffuse.rgb, 1.0);
