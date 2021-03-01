@@ -151,12 +151,13 @@ UPLOADinit = function()
 	FGscaleY = 0.67;
 	FGdis = 0.22;
 	mouseXY[0] = [0.34, -0.0746];
-	image1.src = "images/newBottle/diffuse.png"; //dark
-	image2.src = "images/newBottle/diffuse_bright.png"; //bright
-	image3.src = "images/Holmer/Holmer_new_shape.png"; //shape map
-	image4.src = "images/newBottle/reflect.jpg";  //reflection
-	image5.src = "images/newBottle/bg.png";//refraction
-	image6.src = "images/newBottle/alpha.png";
+	image3.src = "images/Holmer/Holmer_shape.png"; //shape map
+	image1.src = "images/Holmer/Holmer_dark.png"; //dark
+	image2.src = "images/Holmer/Holmer_bright.png"; //bright
+	image4.src = "images/reflect_window2.png";//reflection
+	image5.src = "images/dark.png";  //refraction
+	image5.src = "images/checker.jpg";//refraction
+	image6.src = "images/Holmer/Holmer_new_alphaControl.png";
 
 
 
