@@ -151,13 +151,13 @@ UPLOADinit = function()
 	FGscaleY = 0.67;
 	FGdis = 0.22;
 	mouseXY[0] = [0.34, -0.0746];
-	image3.src = "images/Holmer/Holmer_shape_clean.png"; //shape map
-	image1.src = "images/Holmer/Holmer_dark.png"; //dark
-	image2.src = "images/Holmer/Holmer_bright.png"; //bright
+	image1.src = "images/dark.png"//dark
+	image2.src = "images/white.png"//bright
+	image3.src = "images/sphere.png";  //shape
+	image4.src = "images/trees.png";  //reflection
+	image4.src = "images/bg_artMuseum.jpg";  //reflection
 	image4.src = "images/reflect_window2.png";//reflection
-	image5.src = "images/dark.png";  //refraction
-	image5.src = "images/checker.jpg";//refraction
-	image6.src = "images/Holmer/Holmer_new_alphaControl.png";
+	image6.src = "images/white.png"; //alpha
 
 
 
