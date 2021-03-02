@@ -517,7 +517,7 @@ function fileUploaded(event, elemName)
 		//set thumb image size
 		setThumbImgSize(image3);
 		//update gl-canvas width and height
-		updateCanvasSizeandStyle(image3);
+		//updateCanvasSizeandStyle(image3);
 		
 		// Update WebGL texture.
 		normalImage.src = image3.src;
