@@ -7,7 +7,9 @@ var $container1 = $('#container1'),
 	$container3 = $('#container3'),
 	$container4 = $('#container4'),
 	$container5 = $('#container5'),
-	$container6 = $('#container6');
+	$container6 = $('#container6'),
+    	$container7 = $('#container7');
+	
 
 UPLOADinit = function()
 {
@@ -343,6 +345,7 @@ UPLOADinit = function()
 	$("#container4image").append(image4);
 	$("#container5image").append(image5);
 	$("#container6image").append(image6);
+	$("#container7image").append(image3);
 		
 
 	//key function
@@ -399,6 +402,12 @@ function addEventListeners()
 	container5.addEventListener('drop', dropFile, false);
 
 	var container6 = $container6[0];
+	container6.addEventListener('dragover', cancel, false);
+	container6.addEventListener('dragenter', cancel, false);
+	container6.addEventListener('dragexit', cancel, false);
+	container6.addEventListener('drop', dropFile, false);
+	
+	var container7 = $container7[0];
 	container6.addEventListener('dragover', cancel, false);
 	container6.addEventListener('dragenter', cancel, false);
 	container6.addEventListener('dragexit', cancel, false);
@@ -560,6 +569,19 @@ function fileUploaded(event, elemName)
 
 		// Update WebGL texture.
 		alphaImage.src = image6.src;
+	}
+	else if(elemName === "container7")
+	{
+		//image3 = new Image();
+		//image3.src 	= event.target.result;
+		//image = image3;
+
+		//set thumb image size
+		setThumbImgSize(image3);
+		updateCanvasSizeandStyle(image3);
+
+		// Update WebGL texture.
+		SizeImage.src = image3.src;
 	}
 	
 	// create the image object
