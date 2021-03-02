@@ -530,7 +530,7 @@ function fileUploaded(event, elemName)
 		
 		// Update WebGL texture.
 		normalImage.src = image3.src;
-		updateCanvasSizeandStyle(image3);
+		//updateCanvasSizeandStyle(image3);
 
 	}
 	else if(elemName === "container4")
