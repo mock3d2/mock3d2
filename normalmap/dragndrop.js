@@ -345,7 +345,7 @@ UPLOADinit = function()
 	$("#container4image").append(image4);
 	$("#container5image").append(image5);
 	$("#container6image").append(image6);
-	$("#container7image").append(image3);
+	//$("#container7image").append(image3);
 		
 
 	//key function
@@ -577,7 +577,7 @@ function fileUploaded(event, elemName)
 		//image = image3;
 
 		//set thumb image size
-		setThumbImgSize(image3);
+		//setThumbImgSize(image3);
 		updateCanvasSizeandStyle(image3);
 
 		// Update WebGL texture.
