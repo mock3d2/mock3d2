@@ -191,7 +191,7 @@ UPLOADinit = function()
 	FGscaleY = 0.67;
 	FGdis = 0.22;
 	mouseXY[0] = [0.34, -0.0746];
-	image3.src = "images/newBottle/shape.png"; //shape map
+	image3.src = "images/Holmer/Holmer_shape_clean"; //shape map
 	image1.src = "images/newBottle/diffuse.png"; //dark
 	image2.src = "images/newBottle/diffuse_bright.png"; //bright
 	image4.src = "images/newBottle/reflect.jpg";//reflection
@@ -564,7 +564,7 @@ function fileUploaded(event, elemName)
 		//set thumb image size
 		setThumbImgSize(image3);
 		//update gl-canvas width and height
-		updateCanvasSizeandStyle(image3);
+		//updateCanvasSizeandStyle(image3);
 		
 		// Update WebGL texture.
 		normalImage.src = image3.src;
