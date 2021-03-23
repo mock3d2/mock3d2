@@ -184,7 +184,7 @@ UPLOADinit = function()
 	// image6.src = "images/Escher/handWithSphere/alphaControl.png";
 
 	//newBottle
-	alphaR = 0;
+	alphaR = 1;
 	FGshiftX = -0.11;
 	FGshiftY = -0.0;
 	FGscaleX = 0.6;
