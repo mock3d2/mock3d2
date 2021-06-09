@@ -623,7 +623,7 @@
             //vec4 sum_color = c0 + 1.0 * f * d * cL + 1.0 * s * cL;
 
             // Dividing the color with its magnitude to get final color
-            vec4 color = sum_color/sum_color.a;
+            vec4 color = sum_color;//sum_color.a;
 	    vec4 T=color;
 	    vec4 darkCol = texture2D(uSamplerColor0, vec2(f_texcoord.s, f_texcoord.t) );//dark
             vec4 brightCol = texture2D(uSamplerColor1, vec2(f_texcoord.s, f_texcoord.t) );//bright
@@ -705,7 +705,7 @@
                 }
             }
             // Dividing the color with its magnitude to get final color
-            vec4 color =  sum_color/sum_color.a;
+            vec4 color =  sum_color;//sum_color.a;
 	    vec4 T=color;
 	    vec4 darkCol = texture2D(uSamplerColor0, vec2(f_texcoord.s, f_texcoord.t) );//dark
             vec4 brightCol = texture2D(uSamplerColor1, vec2(f_texcoord.s, f_texcoord.t) );//bright
