@@ -357,6 +357,7 @@
             }
             return refrColor.rgb * refractIntensity;
         }
+	*/
 
         vec3 refract(vec3 n) // Ergun's way
         {
@@ -427,7 +428,7 @@
             
                
         }
-*/
+
         /**
         Calculates illumination for the point based on a given light position
         Inputs:
@@ -736,6 +737,7 @@
 	    
 	    //MODS
 	    
+	    vec4 nn = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t));
 	    vec3 pS = vec3(f_texcoord.s, f_texcoord.t, 0.0);
 
             // Height at point
@@ -767,8 +769,12 @@
             vec3 n = normalize(sn);
 	    
 	    vec3 alphaControl=alphaControl();
+	    vec4 background = texture2D(uSamplerBackground, vec2(f_texcoord.s, f_texcoord.t) );
+            vec3 backgroundColor = background.rgb;
 	    vec3 refl=vec3(0,0,0);
 	    refl=reflect1(n);
+	    vec3 refr=refract(n);
+	    vec3 fresnel=fresnelBlend(n,refl,refr);
 	    vec4 finalColor=diffuse;
 	    
 	    float alpha=diffuse.a;
@@ -781,12 +787,26 @@
             a = alphaControl.b;
             alpha = alpha * (1.0 - a) + alpha * alphaB * a; 
 	    
-	    finalColor = vec4 (refl * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
+	    finalColor = vec4 (fresnel * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
+	    
+	    a=nn.a;
+	    vec3 compBackground = backgroundColor * (1.0 - a) + finalColor.rgb * a;
+            
+            if (checkFresnel )
+            {
+                finalColor = vec4 (fresnel, 1.0);
+            }
+
+            //if (lightsOnly )
+            //{
+                //finalColor = vec4(finalColor_showLightsOnly.rgb, 1.0);
+                //compBackground = vec3(0,0,0) * (1.0 - a) + finalColor.rgb * a;
+            //}
 	    
 	    //MODS
 	    
 
-            gl_FragColor = hLightIntensity * finalColor;
+            gl_FragColor = hLightIntensity * compBackground;
         }
     </script>
 
@@ -1227,7 +1247,7 @@
                         </div>  
                     </li>
                     <!--Refraction-->
-                    <li class="panel hidden">
+                    <li class="panel">
             	        <a class="myControlTitle collapsed" data-toggle="collapse" data-parent = "#accordion_R" href="#refractionControl">
                 	        Refraction
                         </a>
