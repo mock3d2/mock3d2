@@ -806,7 +806,7 @@
 	    //MODS
 	    
 
-            gl_FragColor = hLightIntensity * compBackground;
+            gl_FragColor = vec4(hLightIntensity * compBackground.rgb,1.0);
         }
     </script>
 
