@@ -182,7 +182,7 @@
 
             
             
-        }
+        }*/
 
         vec3 alphaControl()
         {
@@ -190,7 +190,7 @@
             return alphaMap.rgb;
         }
 
-        vec3 spec(vec3 n)
+        /*vec3 spec(vec3 n)
         {
             vec3 currentP = vec3(f_texcoord.s - 0.5, f_texcoord.t-0.5, 0.0);
             vec3 finalSpec = vec3(0.0, 0.0, 0.0);
@@ -217,7 +217,7 @@
             
             return finalSpec ;
         }
-
+        */
         //Reflected texture is treated as ultimate plane.
         vec3 reflect1(vec3 n)
         {
@@ -254,7 +254,7 @@
         }
 
 
-        // vec3 reflect1(vec3 n)
+       /* // vec3 reflect1(vec3 n)
         // {
 
         //     float reflectIntensity = 1.0;
@@ -723,16 +723,68 @@
         **/
         void main()
         {
-            vec4 final_color;
+            vec4 diffuse;
 
             if (useEnvMap)
             {
-                final_color = environmentIllumination();
+                diffuse = environmentIllumination();
             }
             else
             {
-                final_color = pointIllumination();
+                diffuse = pointIllumination();
             }
+	    
+	    //MODS
+	    
+	    vec3 pS = vec3(f_texcoord.s, f_texcoord.t, 0.0);
+
+            // Height at point
+            pS.b = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t))[0]-0.1;
+
+            // Surface normal
+            vec3 sn = vec3(0.0, 0.0, 1.0);
+
+            // The following snippet is used for computing the surface normal
+            // For calculating surface normal, we find the previous and after
+            // fragments  along the x and y axis and find the difference
+            // We then normalize it
+            float lx = 0.0, ux = 0.0;
+            float ly = 0.0, uy = 0.0;
+
+            if(pS.r > 0.001)
+                lx = texture2D(uSamplerHeight, vec2(f_texcoord.s-0.001, f_texcoord.t))[0];
+            if(pS.r < 0.999)
+                ux = texture2D(uSamplerHeight, vec2(f_texcoord.s+0.001, f_texcoord.t))[0];
+
+            if(pS.g > 0.001)
+                ly = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t-0.001))[0];
+            if(pS.g < 0.999)
+                uy = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t+0.001))[0];
+
+            sn.r =  lx - ux;
+            sn.g =  ly - uy;
+
+            vec3 n = normalize(sn);
+	    
+	    vec3 alphaControl=alphaControl();
+	    vec3 refl=vec3(0,0,0);
+	    refl=reflect1(n);
+	    vec4 finalColor=diffuse;
+	    
+	    float alpha=diffuse.a;
+	    float a;
+	    
+	    a=alphaControl.r;
+	    alpha = alpha * (1.0 - a) + alpha * alphaR * a; 
+            a = alphaControl.g;
+            alpha = alpha * (1.0 - a) + alpha * alphaG * a; 
+            a = alphaControl.b;
+            alpha = alpha * (1.0 - a) + alpha * alphaB * a; 
+	    
+	    finalColor = vec4 (refl * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
+	    
+	    //MODS
+	    
 
             gl_FragColor = hLightIntensity * final_color;
         }
