@@ -728,11 +728,11 @@
 
             if (useEnvMap)
             {
-                diffuse = environmentIllumination();
+                diffuse = environmentIllumination()*hLightIntensity;
             }
             else
             {
-                diffuse = pointIllumination();
+                diffuse = pointIllumination()*hLightIntensity;
             }
 	    
 	    //MODS
@@ -806,7 +806,7 @@
 	    //MODS
 	    
 
-            gl_FragColor = vec4(hLightIntensity * compBackground.rgb,1.0);
+            gl_FragColor = vec4(compBackground.rgb,1.0);
         }
     </script>
 
