@@ -789,7 +789,7 @@
 	    
 	    finalColor = vec4 (fresnel * (1.0 - alpha) + finalColor.rgb * alpha, 1.0)*hLightIntensity ;
 	    
-	    //a=nn.a;
+	    a=nn.a;
 	    vec3 compBackground = backgroundColor * (1.0 - a) + finalColor.rgb * a;
             
             if (checkFresnel )
