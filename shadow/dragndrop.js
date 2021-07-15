@@ -11,6 +11,7 @@ var $container1 = $('#container1'),
 	$container6 = $('#container6');
 	$container7 = $('#container7');
 	$container8 = $('#container8');
+	$container9 = $('#container9');
 
 sampleButtons = function()
 {
@@ -196,6 +197,7 @@ sampleButtons = function()
 			image6.src = linkPrefix + "images/white.png"; //alpha
 			image7.src = linkPrefix + "images/hts/skull.png"; //height field
 			image8.src = linkPrefix + "images/area_light_red2.png"; // Env light
+			image9.src = linkPrefix + "images/white.png"; //alpha
 		
 			
 		}
@@ -214,6 +216,7 @@ sampleButtons = function()
 			image6.src = linkPrefix + "images/white.png"; //alpha
 			image7.src = linkPrefix + "images/hts/dragon.png"; //height field
 			image8.src = linkPrefix + "images/area_light_red2.png"; // Env light
+			image9.src = linkPrefix + "images/white.png"; //alpha
 		}
 
 		if($(this).text() ==="Buddha")
@@ -230,6 +233,7 @@ sampleButtons = function()
 			image6.src = linkPrefix + "images/white.png"; //alpha
 			image7.src = linkPrefix + "images/hts/buddha1.png"; //height field
 			image8.src = linkPrefix + "images/area_light_red2.png"; // Env light
+			image9.src = linkPrefix + "images/white.png"; //alpha
 		}
 		
 		$("#container1image").empty().append(image1);
@@ -240,6 +244,7 @@ sampleButtons = function()
 		$("#container6image").empty().append(image6);
 		$("#container7image").empty().append(image7);
 		$("#container8image").empty().append(image8);
+		$("#container9image").empty().append(image9);
 
 		
 
@@ -258,6 +263,7 @@ sampleButtons = function()
     	alphaImage.src = linkPrefix + image6.src;
 		heightFieldImage.src = linkPrefix + image7.src;
 		envLightImage.src = linkPrefix + image8.src;
+		maskImage.src = linkPrefix + image9.src;
 		
     	
     	
@@ -277,6 +283,7 @@ UPLOADinit = function()
 	image6 = new Image();	
 	image7 = new Image();
 	image8 = new Image();
+	image9 = new Image();
 
 	initParameters();
 
@@ -293,6 +300,7 @@ UPLOADinit = function()
 	image5.src = linkPrefix + "images/tree_blurry.jpg";  //refraction	
 	image7.src = linkPrefix + 'images/dark.png'; // height field
 	image8.src = linkPrefix + 'images/dark.png'; // environment light
+	image9.src = linkPrefix + "images/white.png"; //alpha
 
 
 	
@@ -506,6 +514,7 @@ UPLOADinit = function()
 	initDefaultThumbImgSize(image6);
 	initDefaultThumbImgSize(image7);
 	initDefaultThumbImgSize(image8);
+	initDefaultThumbImgSize(image9);
 
 	initDefaultCanvasSize(image3);//canvas size based on Normal map
 	
@@ -517,6 +526,7 @@ UPLOADinit = function()
 	$("#container6image").append(image6);
 	$("#container7image").append(image7);
 	$("#container8image").append(image8);
+	$("#container9image").append(image9);
 		
 
 	//key function
@@ -584,11 +594,17 @@ function addEventListeners()
 	container7.addEventListener('dragexit', cancel, false);
 	container7.addEventListener('drop', dropFile, false);
 
-	var container8 = $container7[0];
+	var container8 = $container8[0];
 	container8.addEventListener('dragover', cancel, false);
 	container8.addEventListener('dragenter', cancel, false);
 	container8.addEventListener('dragexit', cancel, false);
 	container8.addEventListener('drop', dropFile, false);
+	
+	var container9 = $container9[0];
+	container9.addEventListener('dragover', cancel, false);
+	container9.addEventListener('dragenter', cancel, false);
+	container9.addEventListener('dragexit', cancel, false);
+	container9.addEventListener('drop', dropFile, false);
 }
 
 
@@ -773,6 +789,19 @@ function fileUploaded(event, elemName)
 		
 		// Update WebGL texture.
 		envLightImage.src = image8.src;
+
+	}
+	else if(elemName === "container9")
+	{
+		image9 = new Image();
+		image9.src 	= event.target.result;
+		image = image9;
+
+		//set thumb image size
+		setThumbImgSize(image9);
+		
+		// Update WebGL texture.
+		maskImage.src = image9.src;
 
 	}
 	// create the image object
