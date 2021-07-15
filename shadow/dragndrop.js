@@ -1,4 +1,4 @@
-var image1, image2, image3, image4, image5, image6, image7, image8;
+var image1, image2, image3, image4, image5, image6, image7, image8, image9;
 
 //var linkPrefix = "https://raw.githubusercontent.com/h44rd/NormalMaps/master/";
 var linkPrefix = "";
@@ -179,6 +179,7 @@ sampleButtons = function()
 			image6.src = linkPrefix + "images/white.png"; //alpha
 			image7.src = linkPrefix + "images/hts/lucy.png"; //height field
 			image8.src = linkPrefix + "images/area_light_red2.png"; // Env light
+			image9.src = linkPrefix + "images/white.png"; //alpha
 		
 			
 		}
