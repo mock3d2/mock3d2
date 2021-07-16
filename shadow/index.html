@@ -84,7 +84,7 @@
 
         varying vec2 mouseXYcopy;
         
-        uniform sampler2D uSamplerColor0, uSamplerColor1, uSamplerNormal, uSamplerForeground, uSamplerBackground, uSamplerAlpha, uSamplerHeight, uSamplerEnv;
+        uniform sampler2D uSamplerColor0, uSamplerColor1, uSamplerNormal, uSamplerForeground, uSamplerBackground, uSamplerAlpha, uSamplerHeight, uSamplerEnv, uSamplerMask;
 
         uniform int currentLight;
 
@@ -188,6 +188,11 @@
         {
             vec4 alphaMap = texture2D(uSamplerAlpha, vec2(f_texcoord.s, f_texcoord.t) );
             return alphaMap.rgb;
+        }
+	vec3 maskControl()
+        {
+            vec4 maskMap = texture2D(uSamplerMask, vec2(f_texcoord.s, f_texcoord.t) );
+            return maskMap.rgb;
         }
 
         /*vec3 spec(vec3 n)
@@ -769,6 +774,7 @@
             vec3 n = normalize(sn);
 	    
 	    vec3 alphaControl=alphaControl();
+	    vec3 maskControl=maskControl();
 	    vec4 background = texture2D(uSamplerBackground, vec2(f_texcoord.s, f_texcoord.t) );
             vec3 backgroundColor = background.rgb;
 	    vec3 refl=vec3(0,0,0);
