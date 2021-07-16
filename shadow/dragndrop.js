@@ -198,7 +198,7 @@ sampleButtons = function()
 			image6.src = linkPrefix + "images/white.png"; //alpha
 			image7.src = linkPrefix + "images/hts/skull.png"; //height field
 			image8.src = linkPrefix + "images/area_light_red2.png"; // Env light
-			image9.src = linkPrefix + "images/white.png"; //alpha
+			image9.src = linkPrefix + "images/dark.jpg";  //refraction
 		
 			
 		}
