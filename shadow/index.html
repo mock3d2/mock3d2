@@ -90,8 +90,9 @@
 
         uniform bool lightsOnly;
 
-        uniform vec3 lightColor;
-        uniform vec3 baseColor;
+        uniform vec3 lightColor[max_lights];
+        uniform vec3 baseColor[max_lights];
+	
         uniform float lightIntensity[max_lights];
         uniform float pointLightDecay[max_lights];
         
@@ -99,7 +100,10 @@
         uniform bool showSpec[max_lights];
         
         uniform float styleBright, styleDark;
-        uniform float highlightA, highlightB;
+	
+        uniform float highlightA[max_lights];
+	uniform float highlightB[max_lights];
+	
         uniform float alphaR, alphaG, alphaB;
         uniform float logIOR, BGdis;
 
@@ -116,7 +120,9 @@
         uniform float fresnelC;
         uniform bool checkFresnel;
 
-        uniform float hLightDistance, hLightIntensity, hLightBack;
+        uniform float hLightDistance[max_lights]; 
+	uniform float hLightIntensity[max_lights]; 
+	uniform float hLightBack[max_lights];
         uniform bool useEnvMap;
 
         uniform vec3 area_light[light_resolution * light_resolution];
