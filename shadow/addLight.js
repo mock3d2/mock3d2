@@ -202,11 +202,14 @@ function addLightParameters(index){
     //init parameter
     mouseXY[index] = [Math.random()-0.5, Math.random()-0.5];     
     lightColor[index] =[Math.random(), Math.random(), Math.random()];
-    lightIntensity[index] = 0.5;
-    pointLightDis[index] = 0.5;
-    pointLightDecay[index] = 0.1;
-    showDiffuse[index] = 1;
-    showSpec[index] = 1;
+    baseColor[index] =[Math.random(), Math.random(), Math.random()];
+    hLightDistance[index] = 0.5;
+    hLightIntensity[index] = 0.5;
+    highlightA[index] = 0.5;
+    highlightB[index] = 0.5;
+    hLightBack[index] = 0.5;
+   
+    
     
     //mouse 
     var canvas = document.getElementById( "gl-canvas" );
@@ -229,6 +232,7 @@ function addLightParameters(index){
 function setLightMarkFill(index)
 {
     var colorString = color2hex(lightColor[index]);
+    //var colorString = color2hex(liColor[index]);
     var lightMarkName = '#lightMark'+index;
     $(lightMarkName).attr('fill', colorString);
 }
