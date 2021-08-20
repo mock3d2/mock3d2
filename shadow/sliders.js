@@ -354,11 +354,11 @@ function setupLightFunctions(i)
 
 
     ////init base colorPicker & add events
-    colorPickerName = "#lightPanel" + i + "#baseColor.colorPicker";
-    colorString = color2hex(baseColor[i]);
-    $(colorPickerName).attr("value", colorString);
+    var colorPickerNameB = "#lightPanel" + i + "#baseColor.colorPicker";
+    var colorStringB = color2hex(baseColor[i]);
+    $(colorPickerNameB).attr("value", colorStringB);
 
-    $(colorPickerName).minicolors({
+    $(colorPickerNameB).minicolors({
         position: 'bottom right',
         theme: 'bootstrap',
         //defaultValue: colorString,
