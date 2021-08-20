@@ -626,9 +626,9 @@
 		    float s = pow(highlights.r, 5.0);
 		    // Forward scatter
 		    float f = highlights.g;
-
+		
 		    // Calculate diffuse/illumination at position
-		    float d = illumination(pl, 512.0, );
+		    float d = illumination(pl, 512.0,hLB);
 
 		    vec4 c0 = vec4(baseColor[i], 0.5);
 		    vec4 cL = 2.5 * vec4(lightColor[i], 1.0);
