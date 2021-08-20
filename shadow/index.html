@@ -619,7 +619,8 @@
             {
                 if (float(i)< float(lightN))
                 {
-		    vec3 pl = vec3((pLight[i][0].x+1.0)/2.0, (pLight[i][0].y+1.0)/2.0, hLightDistance[i]);
+			
+		    vec3 pl = vec3((pLight[i].x+1.0)/2.0, (pLight[i].y+1.0)/2.0, hLightDistance[i]);
 		    float hLB = hLightBack[i];
 		    vec2 highlights = 1.0 * highlights(pl);
 		    // Specular
