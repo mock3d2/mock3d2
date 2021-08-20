@@ -448,7 +448,7 @@
         Outputs:
             illum - Float diffuse value
         **/
-        float illumination(vec3 pL, float sample)
+        float illumination(vec3 pL, float sample, float hLB)
         {
             // Light position
             float xl = pL.r, yl =  pL.g, zl = pL.b;
@@ -518,7 +518,7 @@
             {
                 if (xi <= ux && xi >= lx &&
                     yi <= uy && yi >= ly &&
-                    zi >-hLightBack)
+                    zi >-hLB)
                 {
                     // Get height value at position
                     vec4 hMap = texture2D(uSamplerHeight, vec2(xi, yi));
@@ -612,27 +612,41 @@
         {
             // Light position based on mouse position
             // This is a conversion from mouse coordinates to canvas coordinates
-            vec3 pl = vec3((pLight[0].x+1.0)/2.0, (pLight[0].y+1.0)/2.0, hLightDistance);
+	    vec4 sum_color = vec4(0,0,0,1);
+            float lightWeight = 0.0;
 
-            vec2 highlights = 1.0 * highlights(pl);
-            // Specular
-            float s = pow(highlights.r, 5.0);
-            // Forward scatter
-            float f = highlights.g;
+            for (int i = 0; i < max_lights; i++)
+            {
+                if (float(i)< float(lightN))
+                {
+		    vec3 pl = vec3((pLight[i][0].x+1.0)/2.0, (pLight[i][0].y+1.0)/2.0, hLightDistance[i]);
+		    float hLB = hLightBack[i];
+		    vec2 highlights = 1.0 * highlights(pl);
+		    // Specular
+		    float s = pow(highlights.r, 5.0);
+		    // Forward scatter
+		    float f = highlights.g;
 
-            // Calculate diffuse/illumination at position
-            float d = illumination(pl, 512.0);
+		    // Calculate diffuse/illumination at position
+		    float d = illumination(pl, 512.0, );
 
-            vec4 c0 = vec4(baseColor, 0.5);
-            vec4 cL = 2.5 * vec4(lightColor, 1.0);
+		    vec4 c0 = vec4(baseColor[i], 0.5);
+		    vec4 cL = 2.5 * vec4(lightColor[i], 1.0);
 
-            // Amount of specular and forward scatter
-            float ks = highlightB;
-            float kf = highlightA;
+		    // Amount of specular and forward scatter
+		    float ks = highlightB[i];
+		    float kf = highlightA[i];
 
-            // Integrated shading equation
-            vec4 sum_color = (1.0 - ks) * ( c0 + ( (1.0 - kf ) + kf * f) * d * cL) + ks * s * cL;
-            //vec4 sum_color = c0 + 1.0 * f * d * cL + 1.0 * s * cL;
+		    // Integrated shading equation
+		    sum_color += ((1.0 - ks) * ( c0 + ( (1.0 - kf ) + kf * f) * d * cL) + ks * s * cL)*hLightIntensity[i];
+		    //vec4 sum_color = c0 + 1.0 * f * d * cL + 1.0 * s * cL;
+		    lightWeight+=hLightIntensity[i];
+		 }else{
+                    break;
+                }
+            }
+            
+		 
 
             // Dividing the color with its magnitude to get final color
             vec4 color = sum_color;//sum_color.a;
@@ -651,7 +665,8 @@
         Outputs:
             color - 4D vector
         **/
-        vec4 environmentIllumination()
+
+/*        vec4 environmentIllumination()
         {
             // Light color and environment sample color
             vec4 cL, cE;
@@ -728,7 +743,7 @@
             return colorFinal;	
             return color;
         }
-
+*/
         /**
         Main function - Executes either point light or environment light
         algorithm based on user selection
@@ -737,14 +752,14 @@
         {
             vec4 diffuse;
 
-            if (useEnvMap)
-            {
-                diffuse = environmentIllumination()*hLightIntensity;
-            }
-            else
-            {
+            //if (useEnvMap)
+            //{
+            //    diffuse = environmentIllumination()*hLightIntensity;
+           // }
+            //else
+           //{
                 diffuse = pointIllumination();
-            }
+            //}
 	    
 	    //MODS
 	    
@@ -799,7 +814,7 @@
             a = alphaControl.b;
             alpha = alpha * (1.0 - a) + alpha * alphaB * a; 
 	    
-	    finalColor = vec4 (fresnel * (1.0 - alpha) + finalColor.rgb * alpha, 1.0)*hLightIntensity ;
+	    finalColor = vec4 (fresnel * (1.0 - alpha) + finalColor.rgb * alpha, 1.0);
 	    
 	    a=nn.a;
 	    vec3 compBackground = backgroundColor * (1.0 - a) + finalColor.rgb * a;
