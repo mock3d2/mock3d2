@@ -39,7 +39,7 @@ $(document).ready(function () {
     	styleDark = slideEvt.value[1];
     });
 
-/*	// Highlight control
+	// Highlight control
     var highlightA_slider = $("#highlightA_slider");
     var highlightA_val = $("#highlightA_val");
     highlightA_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", highlightA).attr("data-slider-tooltip","hide").slider({});
@@ -110,7 +110,7 @@ $(document).ready(function () {
         },
     });
 
-*/
+
     /**Alpha**/
 
     var alphaInRed_slider = $("#alphaInRed_slider");
