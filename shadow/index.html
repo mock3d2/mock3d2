@@ -1149,11 +1149,70 @@
                             <div class="btn_container">
                                 <button class ="btn btn-block" id = "btn_addLight"  >ADD LIGHT</button>
                             </div>
-                            <div id = "lights_container">
-                                <ul class="myAccordion" id = "accordion_Lights">
-                                    
-                                </ul>
-                            </div>
+			    <div class="slider_container">
+				<span class="h6 inlineBlock"> Light Color </span>
+				<div class="pull-right">
+				     <input class="colorPicker" id="lightColor">
+				</div>
+			    </div>
+			    <div class="slider_container">
+				<span class="h6 inlineBlock"> Base Color </span>
+				<div class="pull-right">
+				     <input class="colorPicker" id="baseColor">
+				</div>
+			    </div>
+			    <div class="slider_container">
+				<span class="h6 inlineBlock"> Light Depth </span>
+				<div class="pull-right">
+				    <input type="text" class="form-control mytextbox text-center" id="hLightDistance_val">
+				</div>
+				<div class="slider_box">
+				    <input id="hLightDistance_slider" data-slider-id='customSlider' type="text"/>
+				</div>
+			    </div>
+			    <div class="slider_container">
+				<span class="h6 inlineBlock"> Light Intensity </span>
+				<div class="pull-right">
+				    <input type="text" class="form-control mytextbox text-center" id="hLightIntensity_val">
+				</div>
+				<div class="slider_box">
+				    <input id="hLightIntensity_slider" data-slider-id='customSlider' type="text" />
+				</div>
+			    </div>
+			    <div class = "checkbox">
+				<label>
+				    <span class="h6 inlineBlock" >ADDITIONAL CONTROLS</span>
+				    <div class = "checkbox_container pull-right">
+				    </div>
+				</label>
+			    </div>
+			    <div class="slider_container">
+				<span class="h6 inlineBlock"> Forward Scattering </span>
+				<div class="pull-right">
+				    <input type="text" class="form-control mytextbox text-center" id="highlightA_val">
+				</div>
+				<div class="slider_box">
+				    <input id="highlightA_slider" data-slider-id='customSlider' type="text" />
+				</div>
+			    </div>
+			    <div class="slider_container">
+				<span class="h6 inlineBlock"> Specular Highlights </span>
+				<div class="pull-right">
+				     <input type="text" class="form-control mytextbox text-center" id="highlightB_val">
+				</div>
+				<div class="slider_box">
+				    <input id="highlightB_slider" data-slider-id='customSlider' type="text"/>
+				</div>
+			    </div>
+			   <div class="slider_container">
+				<span class="h6 inlineBlock"> Back Height </span>
+				<div class="pull-right">
+				     <input type="text" class="form-control mytextbox text-center" id="hLightBack_val">
+				</div>
+				<div class="slider_box">
+				    <input id="hLightBack_slider" data-slider-id='customSlider' type="text"/>
+				</div>
+			    </div>
                             
                         </div>  
                     </li>
