@@ -370,9 +370,9 @@ function setupLightFunctions(i)
 		{
 			if(currentLight == i)
 			{
-			    baseColor[0] =rgbObject.r / 255;
-			    baseColor[1] =rgbObject.g / 255;
-			    baseColor[2] =rgbObject.b / 255;
+			    baseColor[i][0] =rgbObject.r / 255;
+			    baseColor[i][1] =rgbObject.g / 255;
+			    baseColor[i][2] =rgbObject.b / 255;
 			    setLightMarkFill(i);//function in addLights.js
 			}
 		}
