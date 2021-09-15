@@ -36,7 +36,7 @@ sampleButtons = function()
 			image3.src = "images/newBottle/shape.png"; //shape map
 			image4.src = "images/newBottle/reflect.jpg";  //reflection
 			image5.src = "images/newBottle/bg.png";//refraction
-			image6.src = "images/newBottle/alpha.png";
+			image6.src = "images/Escher/eye/alphaControl.jpg";
 		}
 
 		/*if($(this).text() ==="Eye")
