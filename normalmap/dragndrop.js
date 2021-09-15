@@ -14,46 +14,23 @@ sampleButtons = function()
 	var exampleButtons = $(".main_button_container button");
 	exampleButtons.on("click", function() {
 		
-		if($(this).text() ==="Bubble")
-		{
-			initParameters();
-			
-			//Bubble for fresnel
-			mouseXY[0] = [0.27, -0.323];
-			FGshiftX = 0.0;
-			FGshiftY = -0.03;
-			FGscaleX = 0.72;
-			FGscaleY = 0.83;
-			logIOR = 0.08;
-			FGdis = 0.27;
-			alphaR = 0;
-			reflMap = 1;
-			fresnelB = 0.39;
-			fresnelC = 0.63;
-			image1.src = "images/dark.png"//dark
-			image2.src = "images/white.png"//bright
-			image3.src = "images/bubble.png";  //shape
-			image4.src = "images/trees.jpg";  //reflection
-			image6.src = "images/white.png"; //alpha
-			image5.src = "images/tree_blurry.jpg";  //refraction	
-	
-		}
+		
 		
 		if($(this).text() ==="Bottle")
 		{
 			initParameters();
 			
 			//newBottle
-			alphaR = 0;
-			FGshiftX = -0.11;
-			FGshiftY = -0.0;
-			FGscaleX = 0.6;
-			FGscaleY = 0.67;
-			FGdis = 0.22;
-			mouseXY[0] = [0.34, -0.0746];
-			fresnelB = 0.3;
-			fresnelC = 0.53;
-			logIOR = 0.27;
+			//alphaR = 0;
+			//FGshiftX = -0.11;
+			//FGshiftY = -0.0;
+			//FGscaleX = 0.6;
+			//FGscaleY = 0.67;
+			//FGdis = 0.22;
+			//mouseXY[0] = [0.34, -0.0746];
+			//fresnelB = 0.3;
+			//fresnelC = 0.53;
+			//logIOR = 0.27;
 			image1.src = "images/newBottle/diffuse.png"; //dark
 			image2.src = "images/newBottle/diffuse_bright.png"; //bright
 			image3.src = "images/newBottle/shape.png"; //shape map
@@ -62,7 +39,7 @@ sampleButtons = function()
 			image6.src = "images/newBottle/alpha.png";
 		}
 
-		if($(this).text() ==="Eye")
+		/*if($(this).text() ==="Eye")
 		{
 			initParameters();
 			
@@ -120,13 +97,13 @@ sampleButtons = function()
 			image5.src = linkPrefix + "images/underWater/BG.jpg";//refraction
 			image6.src = linkPrefix + "images/underWater/alphaControl.jpg";
 
-		}
-		$("#container1image").empty().append(image1);
-		$("#container2image").empty().append(image2);
-		$("#container3image").empty().append(image3);
-		$("#container4image").empty().append(image4);
-		$("#container5image").empty().append(image5);
-		$("#container6image").empty().append(image6);
+		}*/
+		$("#container1image").append(image1);
+		$("#container2image").append(image2);
+		$("#container3image").append(image3);
+		$("#container4image").append(image4);
+		$("#container5image").append(image5);
+		$("#container6image").append(image6);
 		//$("#container7image").empty().append(image7);
 		//$("#container8image").empty().append(image8);
 		//$("#container9image").empty().append(image9);
@@ -141,11 +118,11 @@ sampleButtons = function()
 		updateCanvasSizeandStyle(image3);
 
 		normalImage.src = image3.src;
-    	lightImage.src = image2.src;
-    	darkImage.src = image1.src;
-    	refractImage.src = image5.src;
-    	reflectImage.src = image4.src;
-    	alphaImage.src = image6.src;
+    		lightImage.src = image2.src;
+    		darkImage.src = image1.src;
+    		refractImage.src = image5.src;
+    		reflectImage.src = image4.src;
+    		alphaImage.src = image6.src;
 		//heightFieldImage.src = linkPrefix + image7.src;
 		//envLightImage.src = linkPrefix + image8.src;
 		//maskImage.src = linkPrefix + image9.src;
@@ -156,58 +133,7 @@ sampleButtons = function()
 
 }
 
-var addBottle = $('#btn_Bottle');
-addBottle.click(function() {
-	
-	initParameters();
-			
-	//newBottle
-	alphaR = 0;
-	FGshiftX = -0.11;
-	FGshiftY = -0.0;
-	FGscaleX = 0.6;
-	FGscaleY = 0.67;
-	FGdis = 0.22;
-	mouseXY[0] = [0.34, -0.0746];
-	fresnelB = 0.3;
-	fresnelC = 0.53;
-	logIOR = 0.27;
-	image1.src = "images/newBottle/diffuse.png"; //dark
-	image2.src = "images/newBottle/diffuse_bright.png"; //bright
-	image3.src = "images/newBottle/shape.png"; //shape map
-	image4.src = "images/newBottle/reflect.jpg";  //reflection
-	image5.src = "images/newBottle/bg.png";//refraction
-	image6.src = "images/newBottle/alpha.png";
-	
-	$("#container1image").empty().append(image1);
-	$("#container2image").empty().append(image2);
-	$("#container3image").empty().append(image3);
-	$("#container4image").empty().append(image4);
-	$("#container5image").empty().append(image5);
-	$("#container6image").empty().append(image6);
-	//$("#container7image").empty().append(image7);
-	//$("#container8image").empty().append(image8);
-	//$("#container9image").empty().append(image9);
 
-		
-
-
-	//set thumb image size
-		setThumbImgSize(image3);
-
-		//update gl-canvas width and height
-		updateCanvasSizeandStyle(image3);
-
-		normalImage.src = image3.src;
-	lightImage.src = image2.src;
-	darkImage.src = image1.src;
-	refractImage.src = image5.src;
-	reflectImage.src = image4.src;
-	alphaImage.src = image6.src;
-	
-});
-	
-	
 		
 
 function updateCanvasSizeandStyle(_image)
