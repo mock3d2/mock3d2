@@ -30,12 +30,12 @@ sampleButtons = function()
 			reflMap = 1;
 			fresnelB = 0.39;
 			fresnelC = 0.63;
-			image1.src = linkPrefix + "images/dark.png"//dark
-			image2.src = linkPrefix + "images/white.png"//bright
-			image3.src = linkPrefix + "images/bubble.png";  //shape
-			image4.src = linkPrefix + "images/trees.jpg";  //reflection
-			image6.src = linkPrefix + "images/white.png"; //alpha
-			image5.src = linkPrefix + "images/tree_blurry.jpg";  //refraction	
+			image1.src = "images/dark.png"//dark
+			image2.src = "images/white.png"//bright
+			image3.src = "images/bubble.png";  //shape
+			image4.src = "images/trees.jpg";  //reflection
+			image6.src = "images/white.png"; //alpha
+			image5.src = "images/tree_blurry.jpg";  //refraction	
 	
 		}
 		
@@ -54,12 +54,12 @@ sampleButtons = function()
 			fresnelB = 0.3;
 			fresnelC = 0.53;
 			logIOR = 0.27;
-			image1.src = linkPrefix + "images/newBottle/diffuse.png"; //dark
-			image2.src = linkPrefix + "images/newBottle/diffuse_bright.png"; //bright
-			image3.src = linkPrefix + "images/newBottle/shape.png"; //shape map
-			image4.src = linkPrefix + "images/newBottle/reflect.jpg";  //reflection
-			image5.src = linkPrefix + "images/newBottle/bg.png";//refraction
-			image6.src = linkPrefix + "images/newBottle/alpha.png";
+			image1.src = "images/newBottle/diffuse.png"; //dark
+			image2.src = "images/newBottle/diffuse_bright.png"; //bright
+			image3.src = "images/newBottle/shape.png"; //shape map
+			image4.src = "images/newBottle/reflect.jpg";  //reflection
+			image5.src = "images/newBottle/bg.png";//refraction
+			image6.src = "images/newBottle/alpha.png";
 		}
 
 		if($(this).text() ==="Eye")
@@ -127,7 +127,7 @@ sampleButtons = function()
 		$("#container4image").empty().append(image4);
 		$("#container5image").empty().append(image5);
 		$("#container6image").empty().append(image6);
-		$("#container7image").empty().append(image7);
+		//$("#container7image").empty().append(image7);
 		//$("#container8image").empty().append(image8);
 		//$("#container9image").empty().append(image9);
 
@@ -146,7 +146,7 @@ sampleButtons = function()
     	refractImage.src = linkPrefix + image5.src;
     	reflectImage.src = linkPrefix + image4.src;
     	alphaImage.src = linkPrefix + image6.src;
-		heightFieldImage.src = linkPrefix + image7.src;
+		//heightFieldImage.src = linkPrefix + image7.src;
 		//envLightImage.src = linkPrefix + image8.src;
 		//maskImage.src = linkPrefix + image9.src;
 		
