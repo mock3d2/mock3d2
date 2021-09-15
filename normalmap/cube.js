@@ -182,11 +182,45 @@ window.onload = function init()
     initTextures();
 
     normalImage.src = image3.src;
+    requestCORSIfNotSameOrigin(normalImage, normalImage.src);
+    console.log(normalImage.src);
+  
+  
     lightImage.src = image2.src;
+    requestCORSIfNotSameOrigin(lightImage, lightImage.src);
+    console.log(lightImage.src);
+  
+  
     darkImage.src = image1.src;
+    requestCORSIfNotSameOrigin(darkImage, darkImage.src);
+    console.log(this.darkImage.src);
+  
+  
     refractImage.src = image5.src;
+    requestCORSIfNotSameOrigin(refractImage, refractImage.src);
+    console.log(this.refractImage.src);
+  
+  
     reflectImage.src = image4.src;
+    requestCORSIfNotSameOrigin(reflectImage, reflectImage.src);
+    console.log(this.refractImage.src);
+  
+  
     alphaImage.src = image6.src;
+    requestCORSIfNotSameOrigin(alphaImage, alphaImage.src);
+    console.log(this.alphaImage.src);
+  
+    normalImage.onload = function() { handleTextureLoaded(normalImage, normalTexture); }
+
+    lightImage.onload = function() { handleTextureLoaded(lightImage, lightTexture); }
+
+    darkImage.onload = function() { handleTextureLoaded(darkImage, darkTexture); }
+
+    refractImage.onload = function() { handleTextureLoaded(refractImage, refractTexture); }
+
+    reflectImage.onload = function() { handleTextureLoaded(reflectImage, reflectTexture); }
+
+    alphaImage.onload = function() { handleTextureLoaded(alphaImage, alphaTexture); }
 
 
     gl.activeTexture(gl.TEXTURE0);
@@ -257,27 +291,21 @@ function initTextures() {
 
     normalTexture = gl.createTexture();
     normalImage = new Image();
-    normalImage.onload = function() { handleTextureLoaded(normalImage, normalTexture); }
     
     lightTexture = gl.createTexture();
     lightImage = new Image();
-    lightImage.onload = function() { handleTextureLoaded(lightImage, lightTexture); }
     
     darkTexture = gl.createTexture();
     darkImage = new Image();
-    darkImage.onload = function() { handleTextureLoaded(darkImage, darkTexture); }
     
     refractTexture = gl.createTexture();
     refractImage = new Image();
-    refractImage.onload = function() { handleTextureLoaded(refractImage, refractTexture); }
     
     reflectTexture = gl.createTexture();
     reflectImage = new Image();
-    reflectImage.onload = function() { handleTextureLoaded(reflectImage, reflectTexture); }
     
     alphaTexture = gl.createTexture();
     alphaImage = new Image();
-    alphaImage.onload = function() { handleTextureLoaded(alphaImage, alphaTexture); }
     
     
 
