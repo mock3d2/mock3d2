@@ -9,6 +9,154 @@ var $container1 = $('#container1'),
 	$container5 = $('#container5'),
 	$container6 = $('#container6'),
     	$container7 = $('#container7');
+sampleButtons = function()
+{
+	var exampleButtons = $(".main_button_container button");
+	exampleButtons.on("click", function() {
+		
+		if($(this).text() ==="Bubble")
+		{
+			initParameters();
+			
+			//Bubble for fresnel
+			mouseXY[0] = [0.27, -0.323];
+			FGshiftX = 0.0;
+			FGshiftY = -0.03;
+			FGscaleX = 0.72;
+			FGscaleY = 0.83;
+			logIOR = 0.08;
+			FGdis = 0.27;
+			alphaR = 0;
+			reflMap = 1;
+			fresnelB = 0.39;
+			fresnelC = 0.63;
+			image1.src = linkPrefix + "images/dark.png"//dark
+			image2.src = linkPrefix + "images/white.png"//bright
+			image3.src = linkPrefix + "images/bubble.png";  //shape
+			image4.src = linkPrefix + "images/trees.jpg";  //reflection
+			image6.src = linkPrefix + "images/white.png"; //alpha
+			image5.src = linkPrefix + "images/tree_blurry.jpg";  //refraction	
+	
+		}
+		
+		if($(this).text() ==="Bottle")
+		{
+			initParameters();
+			
+			//newBottle
+			alphaR = 0;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
+			fresnelB = 0.3;
+			fresnelC = 0.53;
+			logIOR = 0.27;
+			image1.src = linkPrefix + "images/newBottle/diffuse.png"; //dark
+			image2.src = linkPrefix + "images/newBottle/diffuse_bright.png"; //bright
+			image3.src = linkPrefix + "images/newBottle/shape.png"; //shape map
+			image4.src = linkPrefix + "images/newBottle/reflect.jpg";  //reflection
+			image5.src = linkPrefix + "images/newBottle/bg.png";//refraction
+			image6.src = linkPrefix + "images/newBottle/alpha.png";
+		}
+
+		if($(this).text() ==="Eye")
+		{
+			initParameters();
+			
+			//Escher/eye
+			alphaR = 0.7;
+			mouseXY[0] = [0.27, -0.41];
+			FGshiftX = -0.21;
+			FGshiftY = -0.17;
+			FGscaleX = 0.62;
+			FGscaleY = 0.64;
+			FGdis = 0.2;
+			fresnelIntensity = 1;
+			image1.src = linkPrefix + "images/Escher/eye/dark.jpg"; //dark
+			image2.src = linkPrefix + "images/Escher/eye/bright.jpg"; //bright
+			image3.src = linkPrefix + "images/Escher/eye/shape.png"; //shape map
+			image4.src = linkPrefix + "images/Escher/eye/reflect.png";  //reflection
+			image5.src = linkPrefix + "images/dark.png";//refraction
+			image6.src = linkPrefix + "images/Escher/eye/alphaControl.jpg";
+		}
+
+		if($(this).text() ==="EscherSphere")
+		{
+			initParameters();
+			
+			//Escher/handWithSphere
+
+			alphaR = 0;
+			reflectIntensity = 1.0;
+			fresnelIntensity = 1.0;
+    
+			FGshiftX = -0.09;
+			FGshiftY = 0.08;
+			FGscaleX = 0.8;
+			FGscaleY = 0.6;
+			reflMap =1;
+			FGdis = 0.11;
+			image1.src = linkPrefix + "images/Escher/handWithSphere/dark.jpg"; //dark
+			image2.src = linkPrefix + "images/Escher/handWithSphere/bright.jpg"; //bright
+			image3.src = linkPrefix + "images/Escher/handWithSphere/shape.png"; //shape map
+			image4.src = linkPrefix + "images/Escher/handWithSphere/reflect2.jpg";  //reflection
+			image5.src = linkPrefix + "images/dark.png";//refraction
+			image6.src = linkPrefix + "images/Escher/handWithSphere/alphaControl.png";
+		}
+
+		if($(this).text() ==="UnderWater")
+		{
+			initParameters();
+			
+			//underWater
+			alphaR = 0;
+			image1.src = linkPrefix + "images/underWater/dark.jpg"; //dark
+			image2.src = linkPrefix + "images/underWater/bright.jpg"; //bright
+			image3.src = linkPrefix + "images/underWater/shape.jpg"; //shape map
+			image4.src = linkPrefix + "images/dark.png";  //reflection
+			image5.src = linkPrefix + "images/underWater/BG.jpg";//refraction
+			image6.src = linkPrefix + "images/underWater/alphaControl.jpg";
+
+		}
+		$("#container1image").empty().append(image1);
+		$("#container2image").empty().append(image2);
+		$("#container3image").empty().append(image3);
+		$("#container4image").empty().append(image4);
+		$("#container5image").empty().append(image5);
+		$("#container6image").empty().append(image6);
+		$("#container7image").empty().append(image7);
+		//$("#container8image").empty().append(image8);
+		//$("#container9image").empty().append(image9);
+
+		
+
+
+    	//set thumb image size
+		setThumbImgSize(image3);
+
+		//update gl-canvas width and height
+		updateCanvasSizeandStyle(image7);
+
+		normalImage.src = linkPrefix + image3.src;
+    	lightImage.src = linkPrefix + image2.src;
+    	darkImage.src = linkPrefix + image1.src;
+    	refractImage.src = linkPrefix + image5.src;
+    	reflectImage.src = linkPrefix + image4.src;
+    	alphaImage.src = linkPrefix + image6.src;
+		heightFieldImage.src = linkPrefix + image7.src;
+		//envLightImage.src = linkPrefix + image8.src;
+		//maskImage.src = linkPrefix + image9.src;
+		
+    	
+    	
+    });
+
+}
+
+		
 
 function updateCanvasSizeandStyle(_image)
 {
