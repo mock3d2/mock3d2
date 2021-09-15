@@ -138,20 +138,20 @@ sampleButtons = function()
 		setThumbImgSize(image3);
 
 		//update gl-canvas width and height
-		updateCanvasSizeandStyle(image7);
+		updateCanvasSizeandStyle(image3);
 
-		normalImage.src = linkPrefix + image3.src;
-    	lightImage.src = linkPrefix + image2.src;
-    	darkImage.src = linkPrefix + image1.src;
-    	refractImage.src = linkPrefix + image5.src;
-    	reflectImage.src = linkPrefix + image4.src;
-    	alphaImage.src = linkPrefix + image6.src;
+		normalImage.src = image3.src;
+    	lightImage.src = image2.src;
+    	darkImage.src = image1.src;
+    	refractImage.src = image5.src;
+    	reflectImage.src = image4.src;
+    	alphaImage.src = image6.src;
 		//heightFieldImage.src = linkPrefix + image7.src;
 		//envLightImage.src = linkPrefix + image8.src;
 		//maskImage.src = linkPrefix + image9.src;
 		
     	
-    	
+    	 
     });
 
 }
