@@ -156,6 +156,58 @@ sampleButtons = function()
 
 }
 
+var addBottle = $('#btn_Bottle');
+addBottle.click(function() {
+	
+	initParameters();
+			
+	//newBottle
+	alphaR = 0;
+	FGshiftX = -0.11;
+	FGshiftY = -0.0;
+	FGscaleX = 0.6;
+	FGscaleY = 0.67;
+	FGdis = 0.22;
+	mouseXY[0] = [0.34, -0.0746];
+	fresnelB = 0.3;
+	fresnelC = 0.53;
+	logIOR = 0.27;
+	image1.src = "images/newBottle/diffuse.png"; //dark
+	image2.src = "images/newBottle/diffuse_bright.png"; //bright
+	image3.src = "images/newBottle/shape.png"; //shape map
+	image4.src = "images/newBottle/reflect.jpg";  //reflection
+	image5.src = "images/newBottle/bg.png";//refraction
+	image6.src = "images/newBottle/alpha.png";
+	
+	$("#container1image").empty().append(image1);
+	$("#container2image").empty().append(image2);
+	$("#container3image").empty().append(image3);
+	$("#container4image").empty().append(image4);
+	$("#container5image").empty().append(image5);
+	$("#container6image").empty().append(image6);
+	//$("#container7image").empty().append(image7);
+	//$("#container8image").empty().append(image8);
+	//$("#container9image").empty().append(image9);
+
+		
+
+
+	//set thumb image size
+		setThumbImgSize(image3);
+
+		//update gl-canvas width and height
+		updateCanvasSizeandStyle(image3);
+
+		normalImage.src = image3.src;
+	lightImage.src = image2.src;
+	darkImage.src = image1.src;
+	refractImage.src = image5.src;
+	reflectImage.src = image4.src;
+	alphaImage.src = image6.src;
+	
+});
+	
+	
 		
 
 function updateCanvasSizeandStyle(_image)
