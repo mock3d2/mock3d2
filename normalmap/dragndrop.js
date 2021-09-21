@@ -209,7 +209,8 @@ UPLOADinit = function()
 	image4 = new Image();
 	image5 = new Image();	
 	image6 = new Image();	
-
+	
+	initParameters();
 
 	//Holmer only
 	// image3.src = "images/Holmer/Holmer_shape.png"; //shape map
