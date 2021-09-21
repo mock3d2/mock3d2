@@ -796,6 +796,9 @@ function imageManip(elemName, image)
 
 function setThumbImgSize(_image)
 {
+	_image.style.width = "auto";
+	_image.style.height = "auto";
+	
 	if(_image.width>=_image.height){
 		_image.style.width = "100px";
 	}else{
