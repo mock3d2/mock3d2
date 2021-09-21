@@ -860,6 +860,7 @@ $(document).on('change', '.btn-file :file', function() {
 $(document).ready( function() {
 
 	UPLOADinit();
+	sampleButtons();
 
     $('.btn-file :file').on('fileselect', function(event) {
     	var elemName = event.target.id;
