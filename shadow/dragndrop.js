@@ -272,6 +272,64 @@ sampleButtons = function()
 
 }
 
+var Bottlebtn = $('#btn_Bottle');
+        Bottlebtn.click(function() {
+		
+			initParameters();
+			
+			//newBottle
+			alphaR = 0;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
+			fresnelB = 0.3;
+			fresnelC = 0.53;
+			logIOR = 0.27;
+			image1.src = linkPrefix + "images/newBottle/diffuse.png"; //dark
+			image2.src = linkPrefix + "images/newBottle/diffuse_bright.png"; //bright
+			image3.src = linkPrefix + "images/newBottle/shape.png"; //shape map
+			image4.src = linkPrefix + "images/newBottle/reflect.jpg";  //reflection
+			image5.src = linkPrefix + "images/newBottle/bg.png";//refraction
+			image6.src = linkPrefix + "images/newBottle/alpha.png";
+		
+			$("#container1image").empty().append(image1);
+			$("#container2image").empty().append(image2);
+			$("#container3image").empty().append(image3);
+			$("#container4image").empty().append(image4);
+			$("#container5image").empty().append(image5);
+			$("#container6image").empty().append(image6);
+			$("#container7image").empty().append(image7);
+			$("#container8image").empty().append(image8);
+			$("#container9image").empty().append(image9);
+
+		
+
+
+			//set thumb image size
+				setThumbImgSize(image3);
+
+				//update gl-canvas width and height
+				updateCanvasSizeandStyle(image7);
+
+				normalImage.src = linkPrefix + image3.src;
+			lightImage.src = linkPrefix + image2.src;
+			darkImage.src = linkPrefix + image1.src;
+			refractImage.src = linkPrefix + image5.src;
+			reflectImage.src = linkPrefix + image4.src;
+			alphaImage.src = linkPrefix + image6.src;
+				heightFieldImage.src = linkPrefix + image7.src;
+				envLightImage.src = linkPrefix + image8.src;
+				maskImage.src = linkPrefix + image9.src;
+		
+		
+            
+    });
+
+
+
 UPLOADinit = function()
 {
 	/******************* Initial Maps *********************/
