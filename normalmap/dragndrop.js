@@ -9,8 +9,8 @@ var $container1 = $('#container1'),
 	$container5 = $('#container5'),
 	$container6 = $('#container6'),
     	$container7 = $('#container7');
-sampleButtons = function()
-{
+//sampleButtons = function()
+//{
 	var exampleButtons = $(".main_button_container button");
 	exampleButtons.on("click", function() {
 		
@@ -131,7 +131,7 @@ sampleButtons = function()
     	 
     });
 
-}
+//}
 
 var bottlebtn = $('#btn_Bottle');
 bottlebtn.click(function() {
