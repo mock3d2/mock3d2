@@ -385,7 +385,7 @@ UPLOADinit = function()
 	image4.src = "images/newBottle/reflect.jpg";//reflection
 	image5.src = "images/dark.png";  //refraction
 	image5.src = "images/newBottle/bg.png";//refraction
-	image6.src = "images/newBottle/alpha.png";;
+	image6.src = "images/newBottle/diffuse.png";;
 
 
 
