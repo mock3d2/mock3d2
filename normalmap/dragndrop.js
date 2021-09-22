@@ -18,7 +18,7 @@ sampleButtons = function()
 		
 		if($(this).text() ==="Bottle")
 		{
-			initParameters();
+			//initParameters();
 			
 			//newBottle
 			//alphaR = 0;
@@ -41,7 +41,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="Eye")
 		{
-			initParameters();
+			//initParameters();
 			
 			//Escher/eye
 			alphaR = 0.7;
@@ -62,7 +62,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="EscherSphere")
 		{
-			initParameters();
+			//initParameters();
 			
 			//Escher/handWithSphere
 
@@ -86,7 +86,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="UnderWater")
 		{
-			initParameters();
+			//initParameters();
 			
 			//underWater
 			alphaR = 0;
