@@ -36,7 +36,7 @@ sampleButtons = function()
 			image3.src = "images/newBottle/shape.png"; //shape map
 			image4.src = "images/newBottle/reflect.jpg";  //reflection
 			image5.src = "images/newBottle/bg.png";//refraction
-			image6.src = "images/Escher/eye/alphaControl.jpg";
+			image6.src = "images/newBottle/alpha.png";
 		}
 
 		if($(this).text() ==="Eye")
@@ -52,12 +52,12 @@ sampleButtons = function()
 			FGscaleY = 0.64;
 			FGdis = 0.2;
 			fresnelIntensity = 1;
-			image1.src = linkPrefix + "images/Escher/eye/dark.jpg"; //dark
-			image2.src = linkPrefix + "images/Escher/eye/bright.jpg"; //bright
-			image3.src = linkPrefix + "images/Escher/eye/shape.png"; //shape map
-			image4.src = linkPrefix + "images/Escher/eye/reflect.png";  //reflection
-			image5.src = linkPrefix + "images/dark.png";//refraction
-			image6.src = linkPrefix + "images/Escher/eye/alphaControl.jpg";
+			image1.src = "images/Eye/eye_dark.jpg"; //dark
+			image2.src = "images/Eye/eye_bright.jpg"; //bright
+			image3.src = "images/Eye/eye_shape.png"; //shape map
+			image4.src = "images/Eye/1eye_foreground.png";  //reflection
+			image5.src = "images/dark.png";//refraction
+			image6.src = "images/Eye/eye_alpha.jpg";
 		}
 
 		if($(this).text() ==="EscherSphere")
