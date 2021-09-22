@@ -81,7 +81,7 @@ sampleButtons = function()
 			image3.src = "images/Escher/handWithSphere/shape.png"; //shape map
 			image4.src = "images/Escher/handWithSphere/reflect2.jpg";  //reflection
 			image5.src = "images/dark.png";//refraction
-			image6.src = "images/Escher/handWithSphere/alpha.png";
+			image6.src = "images/Escher/handWithSphere/alphaControl.png";
 		}
 
 		if($(this).text() ==="Picasso")
@@ -93,8 +93,8 @@ sampleButtons = function()
 			image1.src = "images/Picasso/dark.jpg"; //dark
 			image2.src = "images/Picasso/bright.jpg"; //bright
 			image3.src = "images/Picasso/shape.png"; //shape map
-			image4.src = "images/dark.png";  //reflection
-			image5.src = "images/white.png";//refraction
+			image4.src = "images/white.png";  //reflection
+			image5.src = "images/Picasso/bright.jpg";//refraction
 			image6.src = "images/Picasso/alpha.png";
 
 		}
