@@ -76,26 +76,26 @@ sampleButtons = function()
 			FGscaleY = 0.6;
 			reflMap =1;
 			FGdis = 0.11;
-			image1.src = linkPrefix + "images/Escher/handWithSphere/dark.jpg"; //dark
-			image2.src = linkPrefix + "images/Escher/handWithSphere/bright.jpg"; //bright
-			image3.src = linkPrefix + "images/Escher/handWithSphere/shape.png"; //shape map
-			image4.src = linkPrefix + "images/Escher/handWithSphere/reflect2.jpg";  //reflection
-			image5.src = linkPrefix + "images/dark.png";//refraction
-			image6.src = linkPrefix + "images/Escher/handWithSphere/alphaControl.png";
+			image1.src = "images/Escher/handWithSphere/dark.jpg"; //dark
+			image2.src = "images/Escher/handWithSphere/bright.jpg"; //bright
+			image3.src = "images/Escher/handWithSphere/shape.png"; //shape map
+			image4.src = "images/Escher/handWithSphere/reflect2.jpg";  //reflection
+			image5.src = "images/dark.png";//refraction
+			image6.src = "images/Escher/handWithSphere/alphaControl.png";
 		}
 
-		if($(this).text() ==="UnderWater")
+		if($(this).text() ==="Picasso")
 		{
 			//initParameters();
 			
 			//underWater
 			alphaR = 0;
-			image1.src = linkPrefix + "images/underWater/dark.jpg"; //dark
-			image2.src = linkPrefix + "images/underWater/bright.jpg"; //bright
-			image3.src = linkPrefix + "images/underWater/shape.jpg"; //shape map
-			image4.src = linkPrefix + "images/dark.png";  //reflection
-			image5.src = linkPrefix + "images/underWater/BG.jpg";//refraction
-			image6.src = linkPrefix + "images/underWater/alphaControl.jpg";
+			image1.src = "images/Picasso/picasso_dark.png"; //dark
+			image2.src = "images/Picasso/picasso_bright.png"; //bright
+			image3.src = "images/Picasso/picasso_shape.png"; //shape map
+			image4.src = "images/Picasso/picasso_dark.png";  //reflection
+			image5.src = "images/Picasso/picasso_dark.png";//refraction
+			image6.src = "images/Picasso/picasso_shape.png";
 
 		}
 		$("#container1image").append(image1);
