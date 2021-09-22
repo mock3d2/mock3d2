@@ -90,12 +90,12 @@ sampleButtons = function()
 			
 			//underWater
 			alphaR = 0;
-			image1.src = "images/Picasso/picasso_dark.png"; //dark
-			image2.src = "images/Picasso/picasso_bright.png"; //bright
-			image3.src = "images/Picasso/picasso_shape.png"; //shape map
-			image4.src = "images/Picasso/picasso_dark.png";  //reflection
-			image5.src = "images/Picasso/picasso_dark.png";//refraction
-			image6.src = "images/Picasso/picasso_shape.png";
+			image1.src = "images/Picasso/dark.jpg"; //dark
+			image2.src = "images/Picasso/bright.jpg"; //bright
+			image3.src = "images/Picasso/shape.png"; //shape map
+			image4.src = "images/dark.png";  //reflection
+			image5.src = "images/white.png";//refraction
+			image6.src = "images/Picasso/alpha.png";
 
 		}
 		$("#container1image").append(image1);
