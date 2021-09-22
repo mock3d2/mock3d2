@@ -81,7 +81,7 @@ sampleButtons = function()
 			image3.src = "images/Escher/handWithSphere/shape.png"; //shape map
 			image4.src = "images/Escher/handWithSphere/reflect2.jpg";  //reflection
 			image5.src = "images/dark.png";//refraction
-			image6.src = "images/Escher/handWithSphere/alphaControl.png";
+			image6.src = "images/Escher/handWithSphere/alpha.png";
 		}
 
 		if($(this).text() ==="Picasso")
