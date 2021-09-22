@@ -93,7 +93,7 @@ sampleButtons = function()
 			image1.src = "images/Picasso/dark.jpg"; //dark
 			image2.src = "images/Picasso/bright.jpg"; //bright
 			image3.src = "images/Picasso/shape.png"; //shape map
-			image4.src = "images/white.png";  //reflection
+			image4.src = "images/dark.png";  //reflection
 			image5.src = "images/Picasso/bright.jpg";//refraction
 			image6.src = "images/Picasso/alpha.png";
 
