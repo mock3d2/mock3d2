@@ -66,22 +66,23 @@ sampleButtons = function()
 			
 			//Escher/handWithSphere
 
-			alphaR = 0;
-			reflectIntensity = 1.0;
-			fresnelIntensity = 1.0;
+			
+			//reflectIntensity = 1.0;
+			//fresnelIntensity = 1.0;
     
-			FGshiftX = -0.09;
-			FGshiftY = 0.08;
-			FGscaleX = 0.8;
-			FGscaleY = 0.6;
-			reflMap =1;
-			FGdis = 0.11;
+			alphaR = 1;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
 			image1.src = "images/Escher/handWithSphere/dark.jpg"; //dark
 			image2.src = "images/Escher/handWithSphere/bright.jpg"; //bright
 			image3.src = "images/Escher/handWithSphere/shape.png"; //shape map
 			image4.src = "images/Escher/handWithSphere/reflect2.jpg";  //reflection
-			image5.src = "images/dark.png";//refraction
-			image6.src = "images/Escher/handWithSphere/alphaControl.png";
+			image5.src = "images/himlaya.png";//refraction
+			image6.src = "images/Escher/handWithSphere/alpha.png";
 		}
 
 		if($(this).text() ==="Picasso")
