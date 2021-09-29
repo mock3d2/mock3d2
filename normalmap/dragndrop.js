@@ -346,7 +346,7 @@ UPLOADinit = function()
 	image2.src = "images/Escher/handWithSphere/bright.jpg"; //bright
 	image3.src = "images/Escher/handWithSphere/shape.png"; //shape map
 	image4.src = "images/Escher/handWithSphere/reflect2.jpg";  //reflection
-	image5.src = "images/dark.png";//refraction
+	image5.src = "images/himlaya.png";//refraction
 	image6.src = "images/Escher/handWithSphere/alpha.png";
 
 
