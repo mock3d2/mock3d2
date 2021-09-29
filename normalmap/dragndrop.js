@@ -98,12 +98,12 @@ sampleButtons = function()
 			FGdis = 0.22;
 			mouseXY[0] = [0.34, -0.0746];
 			//fresnelIntensity = 1;
-			image1.src = "images/Jar/dark.png"; //dark
-			image2.src = "images/Jar/bright.png"; //bright
-			image3.src = "images/Jar/shape.png"; //shape map
+			image1.src = "images/JarTb/dark.png"; //dark
+			image2.src = "images/JarTb/bright.png"; //bright
+			image3.src = "images/JarTb/shape.png"; //shape map
 			image4.src = "images/Eye/1eye_foreground.png";  //reflection
 			image5.src = "images/himlaya.png";//refraction
-			image6.src = "images/Jar/alpha.png;
+			image6.src = "images/JarTb/alpha.png;
 
 		}
 		/*if($(this).text() ==="Jar")
