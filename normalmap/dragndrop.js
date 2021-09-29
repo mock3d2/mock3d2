@@ -44,20 +44,20 @@ sampleButtons = function()
 			//initParameters();
 			
 			//Escher/eye
-			alphaR = 0.7;
-			mouseXY[0] = [0.27, -0.41];
-			FGshiftX = -0.21;
-			FGshiftY = -0.17;
-			FGscaleX = 0.62;
-			FGscaleY = 0.64;
-			FGdis = 0.2;
-			fresnelIntensity = 1;
-			image1.src = "images/Eye/eye_dark.jpg"; //dark
-			image2.src = "images/Eye/eye_bright.jpg"; //bright
-			image3.src = "images/Eye/eye_shape.png"; //shape map
+			alphaR = 1;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
+			//fresnelIntensity = 1;
+			image1.src = "images/Links/dark.png"; //dark
+			image2.src = "images/Links/bright.png"; //bright
+			image3.src = "images/Links/shape.png"; //shape map
 			image4.src = "images/Eye/1eye_foreground.png";  //reflection
-			image5.src = "images/dark.png";//refraction
-			image6.src = "images/Eye/eye_alpha.jpg";
+			image5.src = "images/himlaya.png";;//refraction
+			image6.src = "images/Links/alpha.png";
 		}
 
 		if($(this).text() ==="EscherSphere")
