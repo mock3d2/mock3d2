@@ -39,7 +39,7 @@ sampleButtons = function()
 			image6.src = "images/newBottle/alpha.png";
 		}
 
-		if($(this).text() ==="Eye")
+		if($(this).text() ==="Fence")
 		{
 			//initParameters();
 			
@@ -56,7 +56,7 @@ sampleButtons = function()
 			image2.src = "images/Links/bright.png"; //bright
 			image3.src = "images/Links/shape.png"; //shape map
 			image4.src = "images/Eye/1eye_foreground.png";  //reflection
-			image5.src = "images/himlaya.png";;//refraction
+			image5.src = "images/himlaya.png";//refraction
 			image6.src = "images/Links/alpha.png";
 		}
 
@@ -85,18 +85,46 @@ sampleButtons = function()
 			image6.src = "images/Escher/handWithSphere/alpha2.png";
 		}
 
-		if($(this).text() ==="Picasso")
+		if($(this).text() ==="Eye")
 		{
 			//initParameters();
 			
 			//underWater
-			alphaR = 0;
-			image1.src = "images/Picasso/dark.jpg"; //dark
-			image2.src = "images/Picasso/bright.jpg"; //bright
-			image3.src = "images/Picasso/shape.png"; //shape map
-			image4.src = "images/dark.png";  //reflection
-			image5.src = "images/Picasso/bright.jpg";//refraction
-			image6.src = "images/Picasso/alpha.png";
+			alphaR = 1;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
+			//fresnelIntensity = 1;
+			image1.src = "images/Eye/eye_dark.png"; //dark
+			image2.src = "images/Eye/eye_bright.png"; //bright
+			image3.src = "images/Eye/eye_shape.png"; //shape map
+			image4.src = "images/Eye/1eye_foreground.png";  //reflection
+			image5.src = "images/himlaya.png";//refraction
+			image6.src = "images/Eye/alpha.png";
+
+		}
+		if($(this).text() ==="Jar")
+		{
+			//initParameters();
+			
+			//underWater
+			alphaR = 1;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
+			//fresnelIntensity = 1;
+			image1.src = "images/Jar/dark.png"; //dark
+			image2.src = "images/Jar/bright.png"; //bright
+			image3.src = "images/Jar/shape.png"; //shape map
+			image4.src = "images/Eye/1eye_foreground.png";  //reflection
+			image5.src = "images/himlaya.png";//refraction
+			image6.src = "images/Jar/alpha.png;
 
 		}
 		$("#container1image").append(image1);
