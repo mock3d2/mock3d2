@@ -455,7 +455,7 @@
 	    float alpha1 = diffuse.a;
 	    float alpha2 = diffuse.a;
 
-            float a,b,c;
+            float a,b,c,d;
             
             a = alphaControl.r;
             alpha = alpha * (1.0 - a) + alpha * alphaR * a; 
@@ -472,8 +472,8 @@
             
             
 
-            a = nn.a  ;
-            vec3 compBackground = backgroundColor * (1.0 - a) + finalColor.rgb * a;
+            d = nn.a  ;
+            vec3 compBackground = backgroundColor * (1.0 - d) + finalColor.rgb * d;
             
             if (checkFresnel )
             {
