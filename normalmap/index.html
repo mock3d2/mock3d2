@@ -460,14 +460,14 @@
             a = alphaControl.r;
             alpha = alpha * (1.0 - a) + alpha * alphaR * a; 
             b = alphaControl.g;
-            alpha1 = alpha * (1.0 - b) + alpha * alphaG * b; 
+            alpha1 = alpha1 * (1.0 - b) + alpha1 * alphaG * b; 
             c = alphaControl.b;
-            alpha2 = alpha * (1.0 - c) + alpha * alphaB * c; 
+            alpha2 = alpha2 * (1.0 - c) + alpha2 * alphaB * c; 
             
             
             finalColor = vec4 (refl * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
-	    finalColor = vec4 (refr * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
-	    finalColor = vec4 (fresnel * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
+	    finalColor = vec4 (refr * (1.0 - alpha1) + finalColor.rgb * alpha1, 1.0) ;
+	    finalColor = vec4 (fresnel * (1.0 - alpha2) + finalColor.rgb * alpha2, 1.0) ;
             
             
             
