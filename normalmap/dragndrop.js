@@ -69,7 +69,7 @@ sampleButtons = function()
 
 			
 			//reflectIntensity = 1.0;
-			//fresnelIntensity = 1.0;
+			fresnelIntensity = 1.0;
     
 			alphaR = 1;
 			FGshiftX = -0.11;
