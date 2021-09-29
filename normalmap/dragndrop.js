@@ -18,7 +18,7 @@ sampleButtons = function()
 		
 		if($(this).text() ==="Bottle")
 		{
-			//initParameters();
+			initParameters();
 			
 			//newBottle
 			//alphaR = 0;
@@ -41,7 +41,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="JarTable")
 		{
-			//initParameters();
+			initParameters();
 			
 			//Escher/eye
 			alphaR = 1;
@@ -63,7 +63,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="EscherSphere")
 		{
-			//initParameters();
+			initParameters();
 			
 			//Escher/handWithSphere
 
@@ -88,7 +88,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="Fence")
 		{
-			//initParameters();
+			initParameters();
 			
 			//underWater
 			alphaR = 1;
@@ -181,7 +181,7 @@ UPLOADinit = function()
 	image5 = new Image();	
 	image6 = new Image();	
 	
-	//initParameters();
+	initParameters();
 
 	//Holmer only
 	// image3.src = "images/Holmer/Holmer_shape.png"; //shape map
