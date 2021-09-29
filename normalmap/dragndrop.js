@@ -342,13 +342,12 @@ UPLOADinit = function()
 	FGscaleY = 0.67;
 	FGdis = 0.22;
 	mouseXY[0] = [0.34, -0.0746];
-	image3.src = "images/newBottle/shape.png"; //shape map
-	image1.src = "images/newBottle/diffuse.png"; //dark
-	image2.src = "images/newBottle/diffuse_bright.png"; //bright
-	image4.src = "images/newBottle/reflect.jpg";//reflection
-	image5.src = "images/dark.png";  //refraction
-	image5.src = "images/newBottle/bg.png";//refraction
-	image6.src = "images/newBottle/alpha.png";;
+	image1.src = "images/Escher/handWithSphere/dark.jpg"; //dark
+	image2.src = "images/Escher/handWithSphere/bright.jpg"; //bright
+	image3.src = "images/Escher/handWithSphere/shape.png"; //shape map
+	image4.src = "images/Escher/handWithSphere/reflect2.jpg";  //reflection
+	image5.src = "images/dark.png";//refraction
+	image6.src = "images/Escher/handWithSphere/alpha.png";
 
 
 
