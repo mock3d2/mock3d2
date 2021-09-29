@@ -55,7 +55,7 @@ sampleButtons = function()
 			image1.src = "images/Links/dark.png"; //dark
 			image2.src = "images/Links/bright.png"; //bright
 			image3.src = "images/Links/shape.png"; //shape map
-			image4.src = "images/Eye/1eye_foreground.png";  //reflection
+			image4.src = "images/reflmap.png";  //reflection
 			image5.src = "images/himlaya.png";//refraction
 			image6.src = "images/Links/alpha.png";
 
