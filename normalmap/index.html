@@ -457,13 +457,13 @@
             
             a = alphaControl.r;
             alpha = alpha * (1.0 - a) + alpha * alphaR * a; 
-            a = alphaControl.g;
-            alpha = alpha * (1.0 - a) + alpha * alphaG * a; 
-            a = alphaControl.b;
-            alpha = alpha * (1.0 - a) + alpha * alphaB * a; 
+            //a = alphaControl.g;
+            //alpha = alpha * (1.0 - a) + alpha * alphaG * a; 
+            //a = alphaControl.b;
+            //alpha = alpha * (1.0 - a) + alpha * alphaB * a; 
             
             
-            finalColor = vec4 (fresnel * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
+            finalColor = vec4 (refl * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
             
             
             
