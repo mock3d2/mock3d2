@@ -452,18 +452,22 @@
             vec4 finalColor_showLightsOnly = finalColor;
 
             float alpha = diffuse.a;
+	    float alpha1 = diffuse.a;
+	    float alpha2 = diffuse.a;
 
-            float a;
+            float a,b,c;
             
             a = alphaControl.r;
             alpha = alpha * (1.0 - a) + alpha * alphaR * a; 
-            //a = alphaControl.g;
-            //alpha = alpha * (1.0 - a) + alpha * alphaG * a; 
-            //a = alphaControl.b;
-            //alpha = alpha * (1.0 - a) + alpha * alphaB * a; 
+            b = alphaControl.g;
+            alpha1 = alpha * (1.0 - b) + alpha * alphaG * b; 
+            c = alphaControl.b;
+            alpha2 = alpha * (1.0 - c) + alpha * alphaB * c; 
             
             
             finalColor = vec4 (refl * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
+	    finalColor = vec4 (refr * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
+	    finalColor = vec4 (fresnel * (1.0 - alpha) + finalColor.rgb * alpha, 1.0) ;
             
             
             
