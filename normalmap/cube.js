@@ -31,33 +31,33 @@ showSpec[0] = 1;
 
 
 
-var styleBright = 0,
-    styleDark = 1;
+var styleBright,
+    styleDark;
 
-var alphaR = 1;
-var alphaG = 1;
-var alphaB = 1;
+var alphaR;
+var alphaG;
+var alphaB;
 
-var logIOR = 0.25;//[-1, 1]
-var BGdis = 0.6;
+var logIOR5;//[-1, 1]
+var BGdis;
 
-var FGdis = 0.2;
+var FGdis;
 
-var reflMap = 1;//1: plane; 2:hemisphere
+var reflMap;//1: plane; 2:hemisphere
 
-var FGshiftX = 0;
-var FGshiftY = 0;
-var FGscaleX = 0.5;
-var FGscaleY = 0.5;
+var FGshiftX0;
+var FGshiftY;
+var FGscaleX;
+var FGscaleY;
 
-var fresnelIntensity = 0;
-var fresnelB = 0.3; //cos = 0.95
-var fresnelC = 0.6; //cos = 0.7
-var checkFresnel = 0;
+var fresnelIntensity;
+var fresnelB; //cos = 0.95
+var fresnelC; //cos = 0.7
+var checkFresnel;
 
 function initParameters(){
-    lightColor =[0.75, 0.40, 0.15];
-    baseColor = [0.0, 0.1, 0.0];
+    lightColor =[1.0, 1.0, 1.0];
+    //baseColor = [0.0, 0.1, 0.0];
     lightIntensity[0] = 1.0;
     pointLightDis[0] = 0.5;
     pointLightDecay[0] = 0.0;
@@ -69,8 +69,8 @@ function initParameters(){
     styleDark = 1;
 
     //highlight parameters
-    highlightA = 0.5;
-    highlightB = 0.25;
+    //highlightA = 0.5;
+    //highlightB = 0.25;
 
     //Diffuse Alpha parameters
     alphaR = 1;
@@ -230,39 +230,45 @@ window.onload = function init()
     initTextures();
 
     normalImage.src = image3.src;
-    
+    requestCORSIfNotSameOrigin(normalImage, normalImage.src);
+    console.log(normalImage.src);
   
   
     lightImage.src = image2.src;
-    
+    requestCORSIfNotSameOrigin(lightImage, lightImage.src);
+    console.log(lightImage.src);
   
   
     darkImage.src = image1.src;
-    
+    requestCORSIfNotSameOrigin(darkImage, darkImage.src);
+    console.log(this.darkImage.src);
   
   
     refractImage.src = image5.src;
-   
+    requestCORSIfNotSameOrigin(refractImage, refractImage.src);
+    console.log(this.refractImage.src);
   
   
     reflectImage.src = image4.src;
-    
+    requestCORSIfNotSameOrigin(reflectImage, reflectImage.src);
+    console.log(this.refractImage.src);
   
   
     alphaImage.src = image6.src;
-    
+    requestCORSIfNotSameOrigin(alphaImage, alphaImage.src);
+    console.log(this.alphaImage.src);
   
-    //normalImage.onload = function() { handleTextureLoaded(normalImage, normalTexture); }
+    normalImage.onload = function() { handleTextureLoaded(normalImage, normalTexture); }
 
-    //lightImage.onload = function() { handleTextureLoaded(lightImage, lightTexture); }
+    lightImage.onload = function() { handleTextureLoaded(lightImage, lightTexture); }
 
-    //darkImage.onload = function() { handleTextureLoaded(darkImage, darkTexture); }
+    darkImage.onload = function() { handleTextureLoaded(darkImage, darkTexture); }
 
-    //refractImage.onload = function() { handleTextureLoaded(refractImage, refractTexture); }
+    refractImage.onload = function() { handleTextureLoaded(refractImage, refractTexture); }
 
-    //reflectImage.onload = function() { handleTextureLoaded(reflectImage, reflectTexture); }
+    reflectImage.onload = function() { handleTextureLoaded(reflectImage, reflectTexture); }
 
-    //alphaImage.onload = function() { handleTextureLoaded(alphaImage, alphaTexture); }
+    alphaImage.onload = function() { handleTextureLoaded(alphaImage, alphaTexture); }
 
 
     gl.activeTexture(gl.TEXTURE0);
@@ -333,27 +339,21 @@ function initTextures() {
 
     normalTexture = gl.createTexture();
     normalImage = new Image();
-    normalImage.onload = function() { handleTextureLoaded(normalImage, normalTexture); }
     
     lightTexture = gl.createTexture();
     lightImage = new Image();
-    lightImage.onload = function() { handleTextureLoaded(lightImage, lightTexture); }
     
     darkTexture = gl.createTexture();
     darkImage = new Image();
-    darkImage.onload = function() { handleTextureLoaded(darkImage, darkTexture); }
     
     refractTexture = gl.createTexture();
     refractImage = new Image();
-    refractImage.onload = function() { handleTextureLoaded(refractImage, refractTexture); }
     
     reflectTexture = gl.createTexture();
     reflectImage = new Image();
-    reflectImage.onload = function() { handleTextureLoaded(reflectImage, reflectTexture); }
     
     alphaTexture = gl.createTexture();
     alphaImage = new Image();
-    alphaImage.onload = function() { handleTextureLoaded(alphaImage, alphaTexture); }
     
     
 
