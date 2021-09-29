@@ -39,7 +39,7 @@ sampleButtons = function()
 			image6.src = "images/newBottle/alpha.png";
 		}
 
-		/*if($(this).text() ==="Fence")
+		if($(this).text() ==="Fence")
 		{
 			//initParameters();
 			
@@ -58,7 +58,7 @@ sampleButtons = function()
 			image4.src = "images/Eye/1eye_foreground.png";  //reflection
 			image5.src = "images/himlaya.png";//refraction
 			image6.src = "images/Links/alpha.png";
-		}*/
+		}
 
 		if($(this).text() ==="EscherSphere")
 		{
@@ -85,7 +85,7 @@ sampleButtons = function()
 			image6.src = "images/Escher/handWithSphere/alpha2.png";
 		}
 
-		if($(this).text() ==="Eye")
+		/*if($(this).text() ==="Eye")
 		{
 			//initParameters();
 			
@@ -105,7 +105,7 @@ sampleButtons = function()
 			image5.src = "images/himlaya.png";//refraction
 			image6.src = "images/JarTb/alpha.png;
 
-		}
+		}*/
 		/*if($(this).text() ==="Jar")
 		{
 			//initParameters();
