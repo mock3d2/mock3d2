@@ -86,7 +86,7 @@ sampleButtons = function()
 			image6.src = "images/Escher/handWithSphere/alpha2.png";
 		}
 
-		/*if($(this).text() ==="Eye")
+		if($(this).text() ==="Fence")
 		{
 			//initParameters();
 			
@@ -99,14 +99,14 @@ sampleButtons = function()
 			FGdis = 0.22;
 			mouseXY[0] = [0.34, -0.0746];
 			//fresnelIntensity = 1;
-			image1.src = "images/JarTb/dark.png"; //dark
-			image2.src = "images/JarTb/bright.png"; //bright
-			image3.src = "images/JarTb/shape.png"; //shape map
-			image4.src = "images/Eye/1eye_foreground.png";  //reflection
+			image1.src = "images/Fence/dark.png"; //dark
+			image2.src = "images/Fence/bright.png"; //bright
+			image3.src = "images/Fence/shape.png"; //shape map
+			image4.src = "images/reflmap.png";  //reflection
 			image5.src = "images/himlaya.png";//refraction
-			image6.src = "images/JarTb/alpha.png;
+			image6.src = "images/Fence/alpha.png";
 
-		}*/
+		}
 		/*if($(this).text() ==="Jar")
 		{
 			//initParameters();
