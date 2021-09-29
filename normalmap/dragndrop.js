@@ -39,7 +39,7 @@ sampleButtons = function()
 			image6.src = "images/newBottle/alpha.png";
 		}
 
-		if($(this).text() ==="Fence")
+		/*if($(this).text() ==="Fence")
 		{
 			//initParameters();
 			
@@ -58,7 +58,7 @@ sampleButtons = function()
 			image4.src = "images/Eye/1eye_foreground.png";  //reflection
 			image5.src = "images/himlaya.png";//refraction
 			image6.src = "images/Links/alpha.png";
-		}
+		}*/
 
 		if($(this).text() ==="EscherSphere")
 		{
