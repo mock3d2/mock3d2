@@ -496,7 +496,7 @@ UPLOADinit = function()
 	initDefaultThumbImgSize(image5);
 	initDefaultThumbImgSize(image6);
 
-	initDefaultCanvasSize(image3);//canvas size based on Normal map
+	//canvas size based on Normal map
 	
 	$("#container1image").append(image1);
 	$("#container2image").append(image2);
@@ -506,7 +506,7 @@ UPLOADinit = function()
 	$("#container6image").append(image6);
 	//$("#container7image").append(image3);
 		
-
+	initDefaultCanvasSize(image3);
 	//key function
 	addEventListeners();
 }
@@ -685,7 +685,7 @@ function fileUploaded(event, elemName)
 		//set thumb image size
 		setThumbImgSize(image3);
 		//update gl-canvas width and height
-		//updateCanvasSizeandStyle(image3);
+		updateCanvasSizeandStyle(image3);
 		//updateCanvasSizeandStyle(image3);
 		
 		// Update WebGL texture.
