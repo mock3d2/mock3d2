@@ -672,7 +672,7 @@ function fileUploaded(event, elemName)
 		
 		//set thumb image size
 		setThumbImgSize(image2);
-
+		updateCanvasSizeandStyle(image2);
 		// Update WebGL texture.
 		lightImage.src = image2.src;
 	}
@@ -685,7 +685,7 @@ function fileUploaded(event, elemName)
 		//set thumb image size
 		setThumbImgSize(image3);
 		//update gl-canvas width and height
-		updateCanvasSizeandStyle(image3);
+		//updateCanvasSizeandStyle(image3);
 		//updateCanvasSizeandStyle(image3);
 		
 		// Update WebGL texture.
