@@ -129,7 +129,7 @@ var $container1 = $('#container1'),
 
 		}*/
 		
-		$("#container1image").append(image1);
+		/*$("#container1image").append(image1);
 		$("#container2image").append(image2);
 		$("#container3image").append(image3);
 		$("#container4image").append(image4);
