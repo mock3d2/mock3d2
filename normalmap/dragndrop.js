@@ -505,7 +505,7 @@ UPLOADinit = function()
 	$("#container5image").append(image5);
 	$("#container6image").append(image6);
 	//$("#container7image").append(image3);
-		
+	updateCanvasSizeandStyle(image3)	
 	initDefaultCanvasSize(image3);
 	//key function
 	addEventListeners();
@@ -672,7 +672,7 @@ function fileUploaded(event, elemName)
 		
 		//set thumb image size
 		setThumbImgSize(image2);
-		updateCanvasSizeandStyle(image2);
+		//updateCanvasSizeandStyle(image2);
 		// Update WebGL texture.
 		lightImage.src = image2.src;
 	}
