@@ -1,6 +1,6 @@
 var image1, image2, image3, image4, image5, image6;
 
-
+var linkPrefix = "";
 // init vars
 var $container1 = $('#container1'),
 	$container2 = $('#container2'),
