@@ -307,11 +307,11 @@ UPLOADinit = function()
 
 	//newBottle
 	alphaR = 1;
-	FGshiftX = -0.11;
-	FGshiftY = -0.0;
-	FGscaleX = 0.6;
-	FGscaleY = 0.67;
-	FGdis = 0.81;
+	//FGshiftX = -0.11;
+	//FGshiftY = -0.0;
+	//FGscaleX = 0.6;
+	//FGscaleY = 0.67;
+	//FGdis = 0.81;
 	mouseXY[0] = [0.34, -0.0746];
 	image1.src = "images/Escher/handWithSphere/dark.jpg"; //dark
 	image2.src = "images/Escher/handWithSphere/bright.jpg"; //bright
