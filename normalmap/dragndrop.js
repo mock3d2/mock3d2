@@ -9,7 +9,7 @@ var $container1 = $('#container1'),
 	$container5 = $('#container5'),
 	$container6 = $('#container6'),
     	$container7 = $('#container7');
-sampleButtons = function()
+/*sampleButtons = function()
 {
 	var exampleButtons = $(".main_button_container button");
 	exampleButtons.on("click", function() {
@@ -162,7 +162,7 @@ sampleButtons = function()
     	 
     });
 
-}
+}*/
 
 
 
@@ -834,7 +834,7 @@ $(document).on('change', '.btn-file :file', function() {
 $(document).ready( function() {
 
 	UPLOADinit();
-	sampleButtons();
+	//sampleButtons();
 
     $('.btn-file :file').on('fileselect', function(event) {
     	var elemName = event.target.id;
