@@ -107,7 +107,7 @@ sampleButtons = function()
 			image6.src = "images/Fence/alpha.png";
 
 		}
-		/*if($(this).text() ==="Jar")
+		if($(this).text() ==="Jar")
 		{
 			//initParameters();
 			
