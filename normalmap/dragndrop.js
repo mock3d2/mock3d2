@@ -9,7 +9,7 @@ var $container1 = $('#container1'),
 	$container5 = $('#container5'),
 	$container6 = $('#container6'),
     	$container7 = $('#container7');
-/*sampleButtons = function()
+sampleButtons = function()
 {
 	var exampleButtons = $(".main_button_container button");
 	exampleButtons.on("click", function() {
@@ -107,7 +107,7 @@ var $container1 = $('#container1'),
 			image6.src = "images/Fence/alpha.png";
 
 		}
-		if($(this).text() ==="Jar")
+		/*if($(this).text() ==="Jar")
 		{
 			//initParameters();
 			
@@ -127,7 +127,7 @@ var $container1 = $('#container1'),
 			image5.src = "images/himlaya.png";//refraction
 			image6.src = "images/Jar/alpha.png;
 
-		}
+		}*/
 		
 		$("#container1image").append(image1);
 		$("#container2image").append(image2);
@@ -162,7 +162,7 @@ var $container1 = $('#container1'),
     	 
     });
 
-}*/
+}
 
 
 
@@ -834,7 +834,7 @@ $(document).on('change', '.btn-file :file', function() {
 $(document).ready( function() {
 
 	UPLOADinit();
-	//sampleButtons();
+	sampleButtons();
 
     $('.btn-file :file').on('fileselect', function(event) {
     	var elemName = event.target.id;
