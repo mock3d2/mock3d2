@@ -832,7 +832,8 @@ $(document).on('change', '.btn-file :file', function() {
 });
 
 $(document).ready( function() {
-
+	
+	sampleButtons();
 	UPLOADinit();
 	sampleButtons();
 
