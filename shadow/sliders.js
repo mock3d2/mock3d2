@@ -115,7 +115,7 @@ $(document).ready(function () {
 
     var alphaInRed_slider = $("#alphaInRed_slider");
     var alphaInRed_val = $("#alphaInRed_val");
-    alphaInRed_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", alphaR).attr("data-slider-tooltip","hide").slider({});
+    alphaInRed_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", alphaR).slider({});
     bindSliderValParam (alphaInRed_slider, alphaInRed_val, "alphaR");
 
     var alphaInGreen_slider = $("#alphaInGreen_slider");
