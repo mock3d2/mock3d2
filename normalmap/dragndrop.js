@@ -8,6 +8,166 @@ var $container1 = $('#container1'),
 	$container4 = $('#container4'),
 	$container5 = $('#container5'),
 	$container6 = $('#container6');
+sampleButtons = function()
+{
+	var exampleButtons = $(".main_button_container button");
+	exampleButtons.on("click", function() {
+		
+		
+		
+		if($(this).text() ==="Bottle")
+		{
+			//initParameters();
+			
+			//newBottle
+			//alphaR = 0;
+			//FGshiftX = -0.11;
+			//FGshiftY = -0.0;
+			//FGscaleX = 0.6;
+			//FGscaleY = 0.67;
+			//FGdis = 0.22;
+			//mouseXY[0] = [0.34, -0.0746];
+			//fresnelB = 0.3;
+			//fresnelC = 0.53;
+			//logIOR = 0.27;
+			image1.src = "images/newBottle/diffuse.png"; //dark
+			image2.src = "images/newBottle/diffuse_bright.png"; //bright
+			image3.src = "images/newBottle/shape.png"; //shape map
+			image4.src = "images/newBottle/reflect.jpg";  //reflection
+			image5.src = "images/newBottle/bg.png";//refraction
+			image6.src = "images/newBottle/alpha.png";
+		}
+
+		if($(this).text() ==="JarTable")
+		{
+			//initParameters();
+			
+			//Escher/eye
+			alphaR = 1;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
+			//fresnelIntensity = 1;
+			image1.src = "images/Links/dark.png"; //dark
+			image2.src = "images/Links/bright.png"; //bright
+			image3.src = "images/Links/shape.png"; //shape map
+			image4.src = "images/reflmap.png";  //reflection
+			image5.src = "images/himlaya.png";//refraction
+			image6.src = "images/Links/alpha.png";
+
+		}
+
+		if($(this).text() ==="EscherSphere")
+		{
+			//initParameters();
+			
+			//Escher/handWithSphere
+
+			
+			//reflectIntensity = 1.0;
+			fresnelIntensity = 1.0;
+    
+			alphaR = 1;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.81;
+			mouseXY[0] = [0.34, -0.0746];
+			image1.src = "images/Escher/handWithSphere/dark.jpg"; //dark
+			image2.src = "images/Escher/handWithSphere/bright.jpg"; //bright
+			image3.src = "images/Escher/handWithSphere/shape.png"; //shape map
+			image4.src = "images/Escher/handWithSphere/reflect2.jpg";  //reflection
+			image5.src = "images/purprefl.png";//refraction
+			image6.src = "images/Escher/handWithSphere/alpha2.png";
+		}
+
+		if($(this).text() ==="Fence")
+		{
+			//initParameters();
+			
+			//underWater
+			alphaR = 1;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
+			//fresnelIntensity = 1;
+			image1.src = "images/Fence/dark.png"; //dark
+			image2.src = "images/Fence/bright.png"; //bright
+			image3.src = "images/Fence/shape.png"; //shape map
+			image4.src = "images/reflmap.png";  //reflection
+			image5.src = "images/himlaya.png";//refraction
+			image6.src = "images/Fence/alpha.png";
+
+		}
+		/*if($(this).text() ==="Jar")
+		{
+			//initParameters();
+			
+			//underWater
+			alphaR = 1;
+			FGshiftX = -0.11;
+			FGshiftY = -0.0;
+			FGscaleX = 0.6;
+			FGscaleY = 0.67;
+			FGdis = 0.22;
+			mouseXY[0] = [0.34, -0.0746];
+			//fresnelIntensity = 1;
+			image1.src = "images/Jar/dark.png"; //dark
+			image2.src = "images/Jar/bright.png"; //bright
+			image3.src = "images/Jar/shape.png"; //shape map
+			image4.src = "images/Eye/1eye_foreground.png";  //reflection
+			image5.src = "images/himlaya.png";//refraction
+			image6.src = "images/Jar/alpha.png;
+
+		}*/
+		
+		$("#container1image").append(image1);
+		$("#container2image").append(image2);
+		$("#container3image").append(image3);
+		$("#container4image").append(image4);
+		$("#container5image").append(image5);
+		$("#container6image").append(image6);
+		//$("#container7image").empty().append(image7);
+		//$("#container8image").empty().append(image8);
+		//$("#container9image").empty().append(image9);
+
+		
+
+
+    	//set thumb image size
+		setThumbImgSize(image3);
+
+		//update gl-canvas width and height
+		updateCanvasSizeandStyle(image3);
+
+		normalImage.src = image3.src;
+    		lightImage.src = image2.src;
+    		darkImage.src = image1.src;
+    		refractImage.src = image5.src;
+    		reflectImage.src = image4.src;
+    		alphaImage.src = image6.src;
+		//heightFieldImage.src = linkPrefix + image7.src;
+		//envLightImage.src = linkPrefix + image8.src;
+		//maskImage.src = linkPrefix + image9.src;
+		
+    	
+    	 
+    });
+
+}
+
+
+
+
+		
+
 
 UPLOADinit = function()
 {
@@ -646,6 +806,7 @@ $(document).on('change', '.btn-file :file', function() {
 $(document).ready( function() {
 
 	UPLOADinit();
+	sampleButtons();
 
     $('.btn-file :file').on('fileselect', function(event) {
     	var elemName = event.target.id;
