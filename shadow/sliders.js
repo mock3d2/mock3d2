@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
 
     
@@ -11,9 +12,7 @@ $(document).ready(function () {
 
     var checkFresnelElem = $('#checkFresnelSelect');
     initCheckbox(checkFresnel, checkFresnelElem);
-
-    var useEnvMapElem = $('#useEnvMapSelect');
-    initCheckbox(useEnvMap, useEnvMapElem);
+    
 
     if (lightsPosition ==1)
     {
@@ -32,21 +31,18 @@ $(document).ready(function () {
     /**********************SliderBar********************************/
     
     /**Basic Image**/
-	// Falloff control
     $("#styleControl_slider").slider({ min: 0, max: 1, value: [styleBright, styleDark], step: 0.01, focus: true });
     $("#styleControl_slider").on("slide", function(slideEvt) {
     	styleBright = slideEvt.value[0];
     	styleDark = slideEvt.value[1];
     });
 
-	
-
 
     /**Alpha**/
 
     var alphaInRed_slider = $("#alphaInRed_slider");
     var alphaInRed_val = $("#alphaInRed_val");
-    alphaInRed_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", alphaR).slider({});
+    alphaInRed_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", alphaR).attr("data-slider-tooltip","hide").slider({});
     bindSliderValParam (alphaInRed_slider, alphaInRed_val, "alphaR");
 
     var alphaInGreen_slider = $("#alphaInGreen_slider");
@@ -203,19 +199,21 @@ function setupLightFunctions(i)
     })
 
     /////init checkbox
-    /*
-    //lightOn
-    var checkboxName_showDiffuse = '#lightPanel' + i + ' #diffuseSelect';
-    var showDiffuseElem = $(checkboxName_showDiffuse);
-    initCheckbox(showDiffuse[i], showDiffuseElem);
 
-    var checkboxName_showSpec = '#lightPanel' + i + ' #specSelect';
-    var showSpecElem = $(checkboxName_showSpec);
-    initCheckbox(showSpec[i], showSpecElem);
-    */
+    //lightOn
+  
+    
     //////slider events
 
-	// Highlight control
+    //lightIntensity
+    
+
+    //pointLightDis
+    
+
+    //pointLightDecay
+    
+	
     var sliderName_highlightA = "#lightPanel" + i + "#highlightA_slider";
     var textareaName_highlightA = "#lightPanel" + i + " #highlightA_val";
     var highlightA_slider = $(sliderName_highlightA);
@@ -250,11 +248,12 @@ function setupLightFunctions(i)
     var hLightBack_slider = $("#hLightBack_slider");
     var hLightBack_val = $("#hLightBack_val");
     hLightBack_slider.attr("data-slider-min", 0.01).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", hLightBack[i]).attr("data-slider-tooltip","hide").slider({});
-    bindSliderValParamIndex (hLightBack_slider, hLightBack_val, "hLightBack", i);
+    bindSliderValParamIndex (hLightBack_slider, hLightBack_val, "hLightBack", i); 	
+	
 
-    /**Light color and base color**/
-    ////init light colorPicker & add events
-    var colorPickerName = "#lightPanel" + i + "#lightColor.colorPicker";
+
+    ////init colorPicker & add events
+    var colorPickerName = "#lightPanel" + i + " .colorPicker";
     var colorString = color2hex(lightColor[i]);
     $(colorPickerName).attr("value", colorString);
     
@@ -289,37 +288,6 @@ function setupLightFunctions(i)
             }
         },
     });
-
-    $(colorPickerName).minicolors({
-        position: 'bottom right',
-        theme: 'bootstrap',
-        //defaultValue: colorString,
-        change: function(value) {
-            if( !value ) return;
-            if( typeof console === 'object' ) {
-                var rgbObject = $(this).minicolors('rgbObject');
-                for (var i = 0; i < lightNum; i++)
-                {
-                    if (currentLight == i)
-                    {
-                        baseColor[i][0] =rgbObject.r / 255;
-                        baseCplor[i][1] =rgbObject.g / 255;
-                        baseColor[i][2] =rgbObject.b / 255;
-                        setLightMarkFill(i);//function in addLights.js
-                    }
-                }
-                //add event: add border if it is white#ffffff;
-                var addBorderElem = $(this).parent().find(".minicolors-swatch-color");
-                if (value =="#ffffff")
-                {
-                    addBorderElem.addClass('colorPickerBorder');
-                }else{
-                    addBorderElem.removeClass('colorPickerBorder');
-                }
-            }
-        },
-    });
-    
     
     //init: add border if it is white#ffffff;
     if (colorString == "#ffffff")
@@ -397,7 +365,6 @@ function bindSliderValParam(slider, val, param){
             val.val(window[param]);
         });
     });
-    
 
     //textarea allSelected when on focus;
     val.focus(function() {
@@ -411,8 +378,6 @@ function bindSliderValParam(slider, val, param){
             return false;
         });
     });
-
-
 
     //textarea restrict only input number
     val.keydown(function(e){onlyNumber(e)});
@@ -454,6 +419,9 @@ function color2hex(color) {
     });
     return '#' + hex.join('');
 }
+
+
+
 
 
 
