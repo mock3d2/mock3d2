@@ -31,31 +31,31 @@ showSpec[0] = 1;
 
 
 
-var styleBright,
-    styleDark;
+var styleBright=0,
+    styleDark=1;
 
-var alphaR;
-var alphaG;
-var alphaB;
+var alphaR=1;
+var alphaG=1;
+var alphaB=1;
 
-var logIOR5;//[-1, 1]
-var BGdis;
+var logIOR5=0.25;//[-1, 1]
+var BGdis=0.6;
 
-var FGdis;
+var FGdis=0.2;
 
-var reflMap;//1: plane; 2:hemisphere
+var reflMap=1;//1: plane; 2:hemisphere
 
-var FGshiftX0;
-var FGshiftY;
-var FGscaleX;
-var FGscaleY;
+var FGshiftX=0;
+var FGshiftY=0;
+var FGscaleX=0;
+var FGscaleY=0;
 
-var fresnelIntensity;
-var fresnelB; //cos = 0.95
-var fresnelC; //cos = 0.7
-var checkFresnel;
+var fresnelIntensity=0;
+var fresnelB=0.3; //cos = 0.95
+var fresnelC=0.6; //cos = 0.7
+var checkFresnel=0;
 
-//function initParameters(){
+/*function initParameters(){
     lightColor =[1.0, 1.0, 1.0];
     //baseColor = [0.0, 0.1, 0.0];
     lightIntensity[0] = 1.0;
@@ -100,7 +100,7 @@ var checkFresnel;
     //hLightIntensity = 1.0;
     //hLightBack = 0.05;
     //useEnvMap = 0;
-//}
+}*/
 
 
 //Locs
