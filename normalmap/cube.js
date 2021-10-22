@@ -55,7 +55,7 @@ var fresnelB; //cos = 0.95
 var fresnelC; //cos = 0.7
 var checkFresnel;
 
-function initParameters(){
+//function initParameters(){
     lightColor =[1.0, 1.0, 1.0];
     //baseColor = [0.0, 0.1, 0.0];
     lightIntensity[0] = 1.0;
@@ -100,7 +100,7 @@ function initParameters(){
     //hLightIntensity = 1.0;
     //hLightBack = 0.05;
     //useEnvMap = 0;
-}
+//}
 
 
 //Locs
