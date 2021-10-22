@@ -305,7 +305,7 @@ function setupLightFunctions(i)
                         baseColor[i][0] =rgbObject.r / 255;
                         baseColor[i][1] =rgbObject.g / 255;
                         baseColor[i][2] =rgbObject.b / 255;
-                        //setLightMarkFill(i);//function in addLights.js
+                        setLightMarkFill(i);//function in addLights.js
                     }
                 }
                 //add event: add border if it is white#ffffff;
