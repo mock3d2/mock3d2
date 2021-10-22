@@ -21,7 +21,7 @@ sampleButtons = function()
     
 		if($(this).text() ==="Homer")
 		{
-			initParameters();
+			//initParameters();
 			
 			//Holmer only
 			image3.src = linkPrefix + "images/Holmer/Holmer_shape.png"; //shape map
@@ -34,7 +34,7 @@ sampleButtons = function()
 		}
 		if($(this).text() ==="Picasso")
 		{
-			initParameters();
+			//initParameters();
 			
 			//Picasso
 			alphaR = 1;
@@ -47,7 +47,7 @@ sampleButtons = function()
 		}
 		if($(this).text() ==="Bubble")
 		{
-			initParameters();
+			//initParameters();
 			
 			//Bubble for fresnel
 			mouseXY[0] = [0.27, -0.323];
@@ -71,7 +71,7 @@ sampleButtons = function()
 		}
 		if($(this).text() ==="Bottle")
 		{
-			initParameters();
+			//initParameters();
 			
 			//newBottle
 			alphaR = 0;
@@ -94,7 +94,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="Eye")
 		{
-			initParameters();
+			//initParameters();
 			
 			//Escher/eye
 			alphaR = 0.7;
@@ -115,7 +115,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="EscherSphere")
 		{
-			initParameters();
+			//initParameters();
 			
 			//Escher/handWithSphere
 
@@ -139,7 +139,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="UnderWater")
 		{
-			initParameters();
+			//initParameters();
 			
 			//underWater
 			alphaR = 0;
@@ -154,7 +154,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="FragFace")
 		{
-			initParameters();
+			//initParameters();
 		
 			//poly_fragFace
 			image1.src = linkPrefix + "images/poly_fragFace/noise.jpg"; //dark
@@ -167,7 +167,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="Lucy")
 		{
-			initParameters();
+			//initParameters();
 		
 			//Lucy
 			alphaR = 1;
@@ -186,7 +186,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="Skull")
 		{
-			initParameters();
+			//initParameters();
 		
 			//Dragon
 			alphaR = 1;
@@ -205,7 +205,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="Dragon")
 		{
-			initParameters();
+			//initParameters();
 		
 			//Dragon
 			alphaR = 1;
@@ -222,7 +222,7 @@ sampleButtons = function()
 
 		if($(this).text() ==="Buddha")
 		{
-			initParameters();
+			//initParameters();
 			
 			//Buddha
 			alphaR = 1;
@@ -275,7 +275,7 @@ sampleButtons = function()
 var Bottlebtn = $('#btn_Bottle');
         Bottlebtn.click(function() {
 		
-			initParameters();
+			//initParameters();
 			
 			//newBottle
 			alphaR = 0;
@@ -344,7 +344,7 @@ UPLOADinit = function()
 	image8 = new Image();
 	image9 = new Image();
 
-	initParameters();
+	//initParameters();
 
 	//Sphere for fresnel
 	alphaR = 0;
