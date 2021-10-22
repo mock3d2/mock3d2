@@ -213,6 +213,13 @@ function setupLightFunctions(i)
 
     //pointLightDecay
     
+    var sliderName_highlightB = "#lightPanel" + i + "#highlightB_slider";
+    var textareaName_highlightB = "#lightPanel" + i + " #highlightB_val";
+    var highlightB_slider = $("#highlightB_slider");
+    var highlightB_val = $("#highlightB_val");
+    highlightB_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", highlightB[i]).attr("data-slider-tooltip","hide").slider({});
+    bindSliderValParamIndex (highlightB_slider, highlightB_val, "highlightB", i);
+	
 	
     var sliderName_highlightA = "#lightPanel" + i + "#highlightA_slider";
     var textareaName_highlightA = "#lightPanel" + i + " #highlightA_val";
@@ -221,12 +228,7 @@ function setupLightFunctions(i)
     highlightA_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", highlightA[i]).attr("data-slider-tooltip","hide").slider({});
     bindSliderValParamIndex (highlightA_slider, highlightA_val, "highlightA", i);
 
-    var sliderName_highlightB = "#lightPanel" + i + "#highlightB_slider";
-    var textareaName_highlightB = "#lightPanel" + i + " #highlightB_val";
-    var highlightB_slider = $("#highlightB_slider");
-    var highlightB_val = $("#highlightB_val");
-    highlightB_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", highlightB[i]).attr("data-slider-tooltip","hide").slider({});
-    bindSliderValParamIndex (highlightB_slider, highlightB_val, "highlightB", i);
+   
 
 	/**Height Light**/
     var sliderName_hLightDistance = "#lightPanel" + i + "#hLightDistance_slider";
