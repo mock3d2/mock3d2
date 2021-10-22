@@ -252,7 +252,7 @@ function drawLightMarkPosition(index){
     var lightPy = (mouseXY[index][1] + 0.5)*100 + "%";
     var colorString = color2hex(lightColor[index]);
     var lightMark = "lightMark" + index;
-    var circle= makeSVG('circle', {id:lightMark, cx: lightPx, cy: lightPy, fill: '#999999', r: 3});//, stroke: 'white', 'stroke-width': 1
+    var circle= makeSVG('circle', {id:lightMark, cx: lightPx, cy: lightPy, fill: colorString, r:8});//, stroke: 'white', 'stroke-width': 1
     document.getElementById('lightPosition_container').appendChild(circle);
 }
 
