@@ -37,7 +37,92 @@ $(document).ready(function () {
     	styleDark = slideEvt.value[1];
     });
 
+     var sliderName_highlightB = "#lightPanel" + 0 + "#highlightB_slider";
+    var textareaName_highlightB = "#lightPanel" + 0 + " #highlightB_val";
+    var highlightB_slider = $("#highlightB_slider");
+    var highlightB_val = $("#highlightB_val");
+    highlightB_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", highlightB[0]).attr("data-slider-tooltip","hide").slider({});
+    bindSliderValParamIndex (highlightB_slider, highlightB_val, "highlightB", 0);
+	
+	
+    var sliderName_highlightA = "#lightPanel" + 0 + "#highlightA_slider";
+    var textareaName_highlightA = "#lightPanel" + 0 + " #highlightA_val";
+    var highlightA_slider = $(sliderName_highlightA);
+    var highlightA_val = $(textareaName_highlightA);
+    highlightA_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", highlightA[0]).attr("data-slider-tooltip","hide").slider({});
+    bindSliderValParamIndex (highlightA_slider, highlightA_val, "highlightA", 0);
 
+   
+
+	/**Height Light**/
+    var sliderName_hLightDistance = "#lightPanel" + 0 + "#hLightDistance_slider";
+    var textareaName_hLightDistance = "#lightPanel" + 0 + " #hLightDistance_val";
+    var hLightDistance_slider = $("#hLightDistance_slider");
+    var hLightDistance_val = $("#hLightDistance_val");
+    hLightDistance_slider.attr("data-slider-min", -5).attr("data-slider-max", 5).attr("data-slider-step", 0.1).attr("data-slider-value", hLightDistance[0]).attr("data-slider-tooltip","hide").slider({});
+    bindSliderValParamIndex (hLightDistance_slider, hLightDistance_val, "hLightDistance", 0);
+
+    var sliderName_hLightIntensity = "#lightPanel" + 0 + "#hLightIntensity_slider";
+    var textareaName_hLightIntensity = "#lightPanel" + 0 + " #hLightIntensity_val";
+    var hLightIntensity_slider = $("#hLightIntensity_slider");
+    var hLightIntensity_val = $("#hLightIntensity_val");
+    hLightIntensity_slider.attr("data-slider-min", 1).attr("data-slider-max", 10).attr("data-slider-step", 0.1).attr("data-slider-value", hLightIntensity[0]).attr("data-slider-tooltip","hide").slider({});
+    bindSliderValParamIndex (hLightIntensity_slider, hLightIntensity_val, "hLightIntensity", 0);
+
+    var sliderName_hLightBack = "#lightPanel" + 0 + "#hLightBack_slider";
+    var textareaName_hLightBack = "#lightPanel" + 0 + " #hLightBack_val";
+    var hLightBack_slider = $("#hLightBack_slider");
+    var hLightBack_val = $("#hLightBack_val");
+    hLightBack_slider.attr("data-slider-min", 0.01).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", hLightBack[0]).attr("data-slider-tooltip","hide").slider({});
+    bindSliderValParamIndex (hLightBack_slider, hLightBack_val, "hLightBack", 0); 
+	
+        ///Light color and base color
+    ////init light colorPicker & add events
+    var colorPickerName = "#lightColor.colorPicker";
+    var colorString = color2hex(lightColor);
+    $(colorPickerName).attr("value", colorString);
+    
+    
+
+    $(colorPickerName).minicolors({
+        position: 'bottom right',
+        theme: 'bootstrap',
+        //defaultValue: colorString,
+        change: function(value) {
+            if( !value ) return;
+            if( typeof console === 'object' ) {
+                var rgbObject = $(this).minicolors('rgbObject');
+                lightColor[0] =rgbObject.r / 255;
+                lightColor[1] =rgbObject.g / 255;
+                lightColor[2] =rgbObject.b / 255;
+            }
+        },
+    });
+
+
+    ////init base colorPicker & add events
+    colorPickerName = "#baseColor.colorPicker";
+    colorString = color2hex(baseColor);
+    $(colorPickerName).attr("value", colorString);
+
+    $(colorPickerName).minicolors({
+        position: 'bottom right',
+        theme: 'bootstrap',
+        //defaultValue: colorString,
+        change: function(value) {
+            if( !value ) return;
+            if( typeof console === 'object' ) {
+                var rgbObject = $(this).minicolors('rgbObject');
+                baseColor[0] =rgbObject.r / 255;
+                baseColor[1] =rgbObject.g / 255;
+                baseColor[2] =rgbObject.b / 255;
+            }
+        },
+    });
+	
+	
+	
+	
     /**Alpha**/
 
     var alphaInRed_slider = $("#alphaInRed_slider");
