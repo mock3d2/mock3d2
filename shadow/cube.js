@@ -9,112 +9,83 @@ mouseXY[0] = [0.3, -0.3];     //default light
 
 var lightsPosition = 1;
 var lightsOnly = 0;
-var lightColor = [];
-var baseColor = [];
-var lightIntensity = [];
-var pointLightDis = [];
-var pointLightDecay = [];
-var showDiffuse = [];
-var showSpec = [];  
 
-lightColor =[1.0, 1.0 ,1.0];
-baseColor =[1.0, 1.0 ,1.0];
+var lightColor = [];
+lightColor[0] =[1.0, 1.0 ,1.0];
+
+var baseColor = [];
+baseColor[0] =[1.0, 1.0 ,1.0];
+
+var lightIntensity = [];
 lightIntensity[0] = 1.0;
+
+var pointLightDis = [];
 pointLightDis[0] = 0.5;
+
+var pointLightDecay = [];
 pointLightDecay[0] = 0.0;
+
+var showDiffuse = [];
 showDiffuse[0] = 1;
-showSpec[0] = 1; 
+
+var showSpec = [];
+showSpec[0] = 1;
+
+var highlightA = [];
+highlightA[0] = 0.5;
+
+var highlightB = [];
+highlightB[0] = 0.25;
+
+var hLightDistance = [];
+hLightDistance[0] = 1.0; 
+	
+var hLightIntensity = [];
+hLightIntensity[0] = 1.0;
+
+var hLightBack = [];
+hLightBack[0] = 0.05;
+
+
+
+ 
 
 //style section parameters
 
-var styleBright,
-    styleDark;
+var styleBright=0,
+    styleDark=1;
 
 //highlight parameters
-var highlightA,
-    highlightB;
+
 //Diffuse Alpha parameters
-var alphaR;
-var alphaG;
-var alphaB;
+var alphaR = 1;
+var alphaG = 1;
+var alphaB = 1;
 
 //refraction parameters
-var logIOR;//[-1, 1]
-var BGdis;
+var logIOR = 0.25;//[-1, 1]
+var BGdis = 0.6;
 
 //reflection parameters
-var FGdis;
+var FGdis = 0.2;
 
-var reflMap;//1: plane; 2:hemisphere
+var reflMap = 1;//1: plane; 2:hemisphere
 
-var FGshiftX;
-var FGshiftY;
-var FGscaleX;
-var FGscaleY;
+var FGshiftX = 0;
+var FGshiftY = 0;
+var FGscaleX = 0;
+var FGscaleY = 0;
 
 
 //Fresnel parameters
-var fresnelIntensity;
-var fresnelB; //cos = 0.95
-var fresnelC; //cos = 0.7
-var checkFresnel;
+var fresnelIntensity = 0;
+var fresnelB = 0.3; //cos = 0.95
+var fresnelC = 0.6; //cos = 0.7
+var checkFresnel = 0;
 
 // Height Field Light parameters
-var hLightDistance;
-var hLightIntensity;
-var hLightBack;
-var useEnvMap;
 
-//function initParameters(){
-lightColor =[0.75, 0.40, 0.15];
-baseColor = [0.0, 0.1, 0.0];
-lightIntensity[0] = 1.0;
-pointLightDis[0] = 0.5;
-pointLightDecay[0] = 0.0;
-showDiffuse[0] = 1;
-showSpec[0] = 1; 
-
-//style section parameters
-styleBright = 0;
-styleDark = 1;
-
-//highlight parameters
-highlightA = 0.5;
-highlightB = 0.25;
-
-//Diffuse Alpha parameters
-alphaR = 1;
-alphaG = 1;
-alphaB = 1;
-
-//refraction parameters
-logIOR = 0.25;//[-1, 1]
-BGdis = 0.6;
-
-//reflection parameters
-FGdis = 0.2;
-reflMap = 1;//1: plane; 2:hemisphere
-FGshiftX = 0;
-FGshiftY = 0;
-FGscaleX = 0.5;
-FGscaleY = 0.5;
-
-//Fresnel parameters
-fresnelIntensity = 0;
-fresnelB = 0.3; //cos = 0.95
-fresnelC = 0.6; //cos = 0.7
-checkFresnel = 0;
-
-// Height Light parameters
-hLightDistance = 1.0;
-hLightIntensity = 1.0;
-hLightBack = 0.05;
-useEnvMap = 0;
-//}
-
-
-
-
+var useEnvMap = 0;
 
 //Locs
 
@@ -469,7 +440,7 @@ function render() {
     gl.uniform2fv(mouseLoc, flatten(mouseXY));//use flatten() to extract data from JS Array, send it to WebGL functions
     
     gl.uniform1i(lightsOnlyLoc, lightsOnly);
-    gl.uniform3fv(lightColorLoc, lightColor);
+    gl.uniform3fv(lightColorLoc, flatten(lightColor));
     gl.uniform3fv(baseColorLoc, baseColor);
     gl.uniform1fv(lightIntensityLoc, lightIntensity);
     
