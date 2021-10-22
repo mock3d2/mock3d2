@@ -288,6 +288,35 @@ function setupLightFunctions(i)
             }
         },
     });
+    $(colorPickerName).minicolors({
+        position: 'bottom right',
+        theme: 'bootstrap',
+        //defaultValue: colorString,
+        change: function(value) {
+            if( !value ) return;
+            if( typeof console === 'object' ) {
+                var rgbObject = $(this).minicolors('rgbObject');
+                for (var i = 0; i < lightNum; i++)
+                {
+                    if (currentLight == i)
+                    {
+                        baseColor[i][0] =rgbObject.r / 255;
+                        baseColor[i][1] =rgbObject.g / 255;
+                        baseColor[i][2] =rgbObject.b / 255;
+                        //setLightMarkFill(i);//function in addLights.js
+                    }
+                }
+                //add event: add border if it is white#ffffff;
+                var addBorderElem = $(this).parent().find(".minicolors-swatch-color");
+                if (value =="#ffffff")
+                {
+                    addBorderElem.addClass('colorPickerBorder');
+                }else{
+                    addBorderElem.removeClass('colorPickerBorder');
+                }
+            }
+        },
+    });
     
     //init: add border if it is white#ffffff;
     if (colorString == "#ffffff")
