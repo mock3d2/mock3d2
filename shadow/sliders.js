@@ -259,7 +259,9 @@ function setupLightFunctions(i)
     var colorString = color2hex(lightColor[i]);
     $(colorPickerName).attr("value", colorString);
     
-    
+    var colorPickerName2 = "#lightPanel" + i + " .colorPicker";
+    var colorString2 = color2hex(baseColor[i]);
+    $(colorPickerName2).attr("value", colorString2);
 
     $(colorPickerName).minicolors({
         position: 'bottom right',
@@ -290,10 +292,10 @@ function setupLightFunctions(i)
             }
         },
     });
-    $(colorPickerName).minicolors({
+    $(colorPickerName2).minicolors({
         position: 'bottom right',
         theme: 'bootstrap',
-        //defaultValue: colorString,
+        //defaultValue: colorString2,
         change: function(value) {
             if( !value ) return;
             if( typeof console === 'object' ) {
