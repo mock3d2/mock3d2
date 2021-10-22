@@ -39,76 +39,7 @@ $(document).ready(function () {
     	styleDark = slideEvt.value[1];
     });
 
-	// Highlight control
-    var highlightA_slider = $("#highlightA_slider");
-    var highlightA_val = $("#highlightA_val");
-    highlightA_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", highlightA).attr("data-slider-tooltip","hide").slider({});
-    bindSliderValParam (highlightA_slider, highlightA_val, "highlightA");
-
-    var highlightB_slider = $("#highlightB_slider");
-    var highlightB_val = $("#highlightB_val");
-    highlightB_slider.attr("data-slider-min", 0).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", highlightB).attr("data-slider-tooltip","hide").slider({});
-    bindSliderValParam (highlightB_slider, highlightB_val, "highlightB");
-
-	///Height Light
-    var hLightDistance_slider = $("#hLightDistance_slider");
-    var hLightDistance_val = $("#hLightDistance_val");
-    hLightDistance_slider.attr("data-slider-min", -5).attr("data-slider-max", 5).attr("data-slider-step", 0.1).attr("data-slider-value", hLightDistance).attr("data-slider-tooltip","hide").slider({});
-    bindSliderValParam (hLightDistance_slider, hLightDistance_val, "hLightDistance");
-
-    var hLightIntensity_slider = $("#hLightIntensity_slider");
-    var hLightIntensity_val = $("#hLightIntensity_val");
-    hLightIntensity_slider.attr("data-slider-min", 1).attr("data-slider-max", 10).attr("data-slider-step", 0.1).attr("data-slider-value", hLightIntensity).attr("data-slider-tooltip","hide").slider({});
-    bindSliderValParam (hLightIntensity_slider, hLightIntensity_val, "hLightIntensity");
-
-    var hLightBack_slider = $("#hLightBack_slider");
-    var hLightBack_val = $("#hLightBack_val");
-    hLightBack_slider.attr("data-slider-min", 0.01).attr("data-slider-max", 1).attr("data-slider-step", 0.01).attr("data-slider-value", hLightBack).attr("data-slider-tooltip","hide").slider({});
-    bindSliderValParam (hLightBack_slider, hLightBack_val, "hLightBack");
-
-    ///Light color and base color
-    ////init light colorPicker & add events
-    var colorPickerName = "#lightColor.colorPicker";
-    var colorString = color2hex(lightColor);
-    $(colorPickerName).attr("value", colorString);
-    
-    
-
-    $(colorPickerName).minicolors({
-        position: 'bottom right',
-        theme: 'bootstrap',
-        //defaultValue: colorString,
-        change: function(value) {
-            if( !value ) return;
-            if( typeof console === 'object' ) {
-                var rgbObject = $(this).minicolors('rgbObject');
-                lightColor[0] =rgbObject.r / 255;
-                lightColor[1] =rgbObject.g / 255;
-                lightColor[2] =rgbObject.b / 255;
-            }
-        },
-    });
-
-
-    ////init base colorPicker & add events
-    colorPickerName = "#baseColor.colorPicker";
-    colorString = color2hex(baseColor);
-    $(colorPickerName).attr("value", colorString);
-
-    $(colorPickerName).minicolors({
-        position: 'bottom right',
-        theme: 'bootstrap',
-        //defaultValue: colorString,
-        change: function(value) {
-            if( !value ) return;
-            if( typeof console === 'object' ) {
-                var rgbObject = $(this).minicolors('rgbObject');
-                baseColor[0] =rgbObject.r / 255;
-                baseColor[1] =rgbObject.g / 255;
-                baseColor[2] =rgbObject.b / 255;
-            }
-        },
-    });
+	
 
 
     /**Alpha**/
@@ -337,28 +268,29 @@ function setupLightFunctions(i)
             if( !value ) return;
             if( typeof console === 'object' ) {
                 var rgbObject = $(this).minicolors('rgbObject');
-		for(var i = 0;i < lightNum; i++)
-		{
-			if(currentLight == i)
-			{
-			
-			    lightColor[i][0] =rgbObject.r / 255;
-			    lightColor[i][1] =rgbObject.g / 255;
-			    lightColor[i][2] =rgbObject.b / 255;
-			    setLightMarkFill(i);//function in addLights.js
-			}
-		}
+                for (var i = 0; i < lightNum; i++)
+                {
+                    if (currentLight == i)
+                    {
+                        lightColor[i][0] =rgbObject.r / 255;
+                        lightColor[i][1] =rgbObject.g / 255;
+                        lightColor[i][2] =rgbObject.b / 255;
+                        setLightMarkFill(i);//function in addLights.js
+                    }
+                }
+                //add event: add border if it is white#ffffff;
+                var addBorderElem = $(this).parent().find(".minicolors-swatch-color");
+                if (value =="#ffffff")
+                {
+                    addBorderElem.addClass('colorPickerBorder');
+                }else{
+                    addBorderElem.removeClass('colorPickerBorder');
+                }
             }
         },
     });
 
-
-    ////init base colorPicker & add events
-    var colorPickerNameB = "#lightPanel" + i + "#baseColor.colorPicker";
-    var colorStringB = color2hex(baseColor[i]);
-    $(colorPickerNameB).attr("value", colorStringB);
-
-    $(colorPickerNameB).minicolors({
+    $(colorPickerName).minicolors({
         position: 'bottom right',
         theme: 'bootstrap',
         //defaultValue: colorString,
@@ -366,20 +298,27 @@ function setupLightFunctions(i)
             if( !value ) return;
             if( typeof console === 'object' ) {
                 var rgbObject = $(this).minicolors('rgbObject');
-		for(var i = 0;i < lightNum; i++)
-		{
-			if(currentLight == i)
-			{
-			    baseColor[i][0] =rgbObject.r / 255;
-			    baseColor[i][1] =rgbObject.g / 255;
-			    baseColor[i][2] =rgbObject.b / 255;
-			    setLightMarkFill(i);//function in addLights.js
-			}
-		}
+                for (var i = 0; i < lightNum; i++)
+                {
+                    if (currentLight == i)
+                    {
+                        baseColor[i][0] =rgbObject.r / 255;
+                        baseCplor[i][1] =rgbObject.g / 255;
+                        baseColor[i][2] =rgbObject.b / 255;
+                        setLightMarkFill(i);//function in addLights.js
+                    }
+                }
+                //add event: add border if it is white#ffffff;
+                var addBorderElem = $(this).parent().find(".minicolors-swatch-color");
+                if (value =="#ffffff")
+                {
+                    addBorderElem.addClass('colorPickerBorder');
+                }else{
+                    addBorderElem.removeClass('colorPickerBorder');
+                }
             }
         },
     });
-    
     
     
     //init: add border if it is white#ffffff;
