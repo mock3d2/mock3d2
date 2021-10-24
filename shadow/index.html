@@ -767,7 +767,10 @@
 	    vec4 nn = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t));
 	    vec3 pS = vec3(f_texcoord.s, f_texcoord.t, 0.0);
 	    vec4 revht;
-	    revht = vec4(1-nn.r,1-nn.g,1-nn.b,nn.a);
+	    //revht = vec4(1-nn.r,1-nn.g,1-nn.b,nn.a);
+	    revht.r=1.0-nn.r;
+	    revht.g=1.0-nn.g;
+	    revht.b=1.0-nn.b;
             // Height at point
             pS.b = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t))[0]-0.1;
 
