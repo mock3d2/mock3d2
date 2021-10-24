@@ -766,7 +766,7 @@
 	    
 	    vec4 nn = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t));
 	    vec3 pS = vec3(f_texcoord.s, f_texcoord.t, 0.0);
-
+	    vec4 revht = 1-nn;
             // Height at point
             pS.b = texture2D(uSamplerHeight, vec2(f_texcoord.s, f_texcoord.t))[0]-0.1;
 
@@ -833,8 +833,8 @@
 	    
 	    //MODS
 	    
-
-            gl_FragColor = vec4(compBackground.rgb,1.0);
+	     
+            gl_FragColor = vec4(revht.rgb,1.0);
         }
     </script>
 
