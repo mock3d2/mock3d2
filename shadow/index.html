@@ -807,7 +807,7 @@
 	    refl=reflect1(n);
 	    vec3 refr=refract(n);
 	    vec3 fresnel=fresnelBlend(n,refl,refr);
-	    vec4 finalColor=diffuse;
+	    vec4 finalColor=diffuse+revht;
 	    
 	    float alpha=diffuse.a;
 	    float a;
