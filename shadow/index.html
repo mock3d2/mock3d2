@@ -538,10 +538,10 @@
             // The following snippet is for calculating specular and forward scatter values
             // We use maximum and minimum value to control their falloff
             // Specular
-            float s = (illum - minfall)/(maxfall - minfall);
-            if (s > 1.0) s = 1.0; 
-            if (s < 0.0) s = 0.0;
-            return s;
+            float illums = (illum - minfall)/(maxfall - minfall);
+            if (illums > 1.0) illums = 1.0; 
+            if (illums < 0.0) illums = 0.0;
+            return illums;
         }
 
         /**
